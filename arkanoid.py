@@ -77,7 +77,7 @@ while True:
         game_over_sound.play()
         pygame.time.wait(2000)  # Wait for 2 seconds to let the sound play
         show_start_screen(SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT)
-        paddle = create_paddle()
+        paddle = create_paddle(SCREEN_WIDTH, SCREEN_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT)
         ball, ball_dx, ball_dy = create_ball()
         bricks = create_bricks()
 
