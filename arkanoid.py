@@ -62,7 +62,11 @@ while True:
     scale_y = SCREEN_HEIGHT / 600
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_SPACE]:
+    if keys[pygame.K_LEFT]:
+        move_paddle(paddle, -PADDLE_SPEED, SCREEN_WIDTH, PADDLE_WIDTH)
+    if keys[pygame.K_RIGHT]:
+        move_paddle(paddle, PADDLE_SPEED, SCREEN_WIDTH, PADDLE_WIDTH)
+    elif keys[pygame.K_SPACE]:
         shoot_laser(paddle, lasers)
         laser_sound.play()
 
