@@ -47,8 +47,7 @@ show_start_screen(SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 clock = pygame.time.Clock()
 paddle = create_paddle(SCREEN_WIDTH, SCREEN_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT)
-ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, BALL_SPEED, paddle)
-ball_stuck = True
+ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, 0, paddle)
 ball_stuck = True
 bricks = create_bricks()
 
@@ -87,6 +86,7 @@ while True:
         ball.x = paddle.x + paddle.width // 2 - BALL_SIZE // 2
         ball.y = paddle.y - BALL_SIZE
         if keys[pygame.K_s] or keys[pygame.K_SPACE] or keys[pygame.K_f]:
+            ball_dx, ball_dy = BALL_SPEED * random.choice((1, -1)), -BALL_SPEED  # Launch the ball
             ball_stuck = False
             ball_dx, ball_dy = BALL_SPEED * random.choice((1, -1)), -BALL_SPEED  # Launch the ball
     else:
