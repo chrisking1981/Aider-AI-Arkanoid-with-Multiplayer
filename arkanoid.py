@@ -144,6 +144,9 @@ while True:
     for brick in bricks:
         draw_brick(SCREEN, brick, BLUE, scale_x, scale_y)
     
+    for laser in lasers:
+        pygame.draw.rect(SCREEN, RED, laser)
+        
     if shield:
         pygame.draw.rect(SCREEN, GREEN, shield)
         text = font.render("S", True, WHITE)
