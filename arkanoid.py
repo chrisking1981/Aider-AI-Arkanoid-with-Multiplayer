@@ -143,6 +143,10 @@ while True:
                     bricks.remove(brick)
                     lasers.remove(laser)
                     brick_hit_sound.play()
+                    if random.random() < SHIELD_DROP_CHANCE:
+                        shield = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
+                    elif random.random() < ENLARGE_DROP_CHANCE:
+                        enlarge = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
                     break
 
     if shield:
