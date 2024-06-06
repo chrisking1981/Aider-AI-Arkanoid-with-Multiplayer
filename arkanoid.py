@@ -23,8 +23,15 @@ game_over_sound = generate_sound(220, 0.5)
 # Screen dimensions
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT
+SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Arkanoid")
+
+def maintain_aspect_ratio(event):
+    global SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN
+    SCREEN_WIDTH = event.w
+    SCREEN_HEIGHT = int(SCREEN_WIDTH / ASPECT_RATIO)
+    SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
 
 # Colors
 BLACK = (0, 0, 0)
@@ -131,6 +138,8 @@ bricks = create_bricks()
 while True:
 
     for event in pygame.event.get():
+        if event.type == pygame.VIDEORESIZE:
+            maintain_aspect_ratio(event)
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
