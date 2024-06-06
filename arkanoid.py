@@ -86,9 +86,9 @@ while True:
     if ball_stuck:
         ball.x = paddle.x + paddle.width // 2 - BALL_SIZE // 2
         ball.y = paddle.y - BALL_SIZE
-        if keys[pygame.K_s]:
+        if keys[pygame.K_s] or keys[pygame.K_SPACE]:
             ball_stuck = False
-            ball_dx, ball_dy = 0, 0  # Ensure no initial velocity
+            ball_dx, ball_dy = BALL_SPEED * random.choice((1, -1)), -BALL_SPEED  # Launch the ball
     else:
         ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH, SCREEN_HEIGHT)
     if laser_active and keys[pygame.K_s]:
