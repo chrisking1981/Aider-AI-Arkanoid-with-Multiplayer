@@ -2,6 +2,8 @@ import pygame
 import random
 
 # Power-ups
+SHIELD_WIDTH = 20
+SHIELD_HEIGHT = 20
 SHIELD_SIZE = 20
 SHIELD_DROP_CHANCE = 0.3
 ENLARGE_DROP_CHANCE = 0.2
