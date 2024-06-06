@@ -24,7 +24,7 @@ game_over_sound = generate_sound(220, 0.5)
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT
-SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
+SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
 pygame.display.set_caption("Arkanoid")
 
 def maintain_aspect_ratio(event):
@@ -35,7 +35,7 @@ def maintain_aspect_ratio(event):
         SCREEN_WIDTH = int(SCREEN_HEIGHT * ASPECT_RATIO)
     else:
         SCREEN_HEIGHT = int(SCREEN_WIDTH / ASPECT_RATIO)
-    SCREEN = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+    SCREEN = pygame.display.set_mode((event.w, event.h), pygame.FULLSCREEN)
 
 # Colors
 BLACK = (0, 0, 0)
