@@ -125,7 +125,7 @@ ball, ball_dx, ball_dy = create_ball()
 bricks = create_bricks()
 
 while True:
-    for event in pygame.event.get():
+    keys = pygame.key.get_pressed()
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
@@ -142,7 +142,20 @@ while True:
             if event.key == pygame.K_q:
                 pygame.quit()
                 sys.exit()
-    if keys[pygame.K_LEFT]:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_r:
+                paddle = create_paddle()
+                ball, ball_dx, ball_dy = create_ball()
+                bricks = create_bricks()
+            if event.key == pygame.K_q:
+                pygame.quit()
+                sys.exit()
+
+    keys = pygame.key.get_pressed()
         move_paddle(paddle, -PADDLE_SPEED)
     if keys[pygame.K_RIGHT]:
         move_paddle(paddle, PADDLE_SPEED)
