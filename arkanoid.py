@@ -112,7 +112,7 @@ while True:
 
     lasers = update_lasers(lasers, bricks, brick_hit_sound)
 
-    shield, enlarge, laser, shield_active, enlarge_active, laser_active, countdown_start_time = update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound, countdown_start_time, SCREEN_HEIGHT)
+    shield, enlarge, shield_active, enlarge_active, countdown_start_time = update_powerups(shield, enlarge, paddle, shield_active, enlarge_active, shield_sound, enlarge_sound, countdown_start_time, SCREEN_HEIGHT)
     shield, shield_active, countdown_start_time = update_shield(shield, paddle, shield_active, shield_sound, countdown_start_time, SCREEN_HEIGHT)
     enlarge, enlarge_active = update_enlarge(enlarge, paddle, enlarge_active, enlarge_sound, SCREEN_HEIGHT)
 
