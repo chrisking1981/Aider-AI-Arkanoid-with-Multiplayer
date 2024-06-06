@@ -85,7 +85,7 @@ while True:
     if ball_stuck:
         ball.x = paddle.x + paddle.width // 2 - BALL_SIZE // 2
         ball.y = paddle.y - BALL_SIZE
-        if keys[pygame.K_s] or keys[pygame.K_SPACE] or keys[pygame.K_f]:
+        if keys[pygame.K_f]:
             ball_dx, ball_dy = BALL_SPEED * random.choice((1, -1)), -BALL_SPEED  # Launch the ball
             ball_stuck = False
             ball_dx, ball_dy = BALL_SPEED * random.choice((1, -1)), -BALL_SPEED  # Launch the ball
