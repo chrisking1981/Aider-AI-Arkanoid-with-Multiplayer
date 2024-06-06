@@ -151,8 +151,12 @@ while True:
     if ball.bottom >= SCREEN_HEIGHT:
         game_over_sound.play()
         pygame.time.wait(2000)  # Wait for 2 seconds to let the sound play
-        pygame.quit()
-        sys.exit()
+        game_over_sound.play()
+        pygame.time.wait(2000)  # Wait for 2 seconds to let the sound play
+        show_start_screen()
+        paddle = create_paddle()
+        ball, ball_dx, ball_dy = create_ball()
+        bricks = create_bricks()
 
     SCREEN.fill(BLACK)
     draw_paddle(paddle)
