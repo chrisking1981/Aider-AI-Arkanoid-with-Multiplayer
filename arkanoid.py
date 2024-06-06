@@ -123,6 +123,8 @@ while True:
     # Update countdown timer
     if laser:
         pygame.draw.rect(SCREEN, RED, laser)
+        text = font.render("L", True, WHITE)
+        SCREEN.blit(text, (laser.x + 5, laser.y + 5))
         text = font.render("Laser", True, WHITE)
         SCREEN.blit(text, (laser.x, laser.y - 20))
 
