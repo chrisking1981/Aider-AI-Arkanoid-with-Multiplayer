@@ -88,7 +88,7 @@ def shoot_laser(paddle, lasers, last_shot_time, cooldown, laser_sound):
         return current_time
     return last_shot_time
 
-def update_lasers(lasers, bricks, brick_hit_sound):
+def update_lasers(lasers, bricks, brick_hit_sound, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound):
     for laser in lasers[:]:
         laser.y -= 15
         if laser.y < 0:
@@ -99,7 +99,9 @@ def update_lasers(lasers, bricks, brick_hit_sound):
                     bricks.remove(brick)
                     lasers.remove(laser)
                     brick_hit_sound.play()
+                    shield, enlarge, laser = handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
                     break
+    return lasers, shield, enlarge, laser
     return lasers
 # Enlarge constants
 ENLARGE_DROP_CHANCE = 0.2
