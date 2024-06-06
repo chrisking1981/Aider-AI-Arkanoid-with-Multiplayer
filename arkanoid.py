@@ -6,12 +6,12 @@ import numpy as np
 # Initialize Pygame
 pygame.init()
 
-from sound import paddle_hit_sound, brick_hit_sound, game_over_sound, laser_sound, shield_sound, enlarge_sound
+from sound import paddle_hit_sound, brick_hit_sound, game_over_sound, laser_sound, shield_sound, enlarge_sound, sticky_sound
 from start_screen import show_start_screen
 from paddle import create_paddle, move_paddle, draw_paddle
 from ball import create_ball, move_ball, draw_ball
 from brick import create_bricks, draw_brick
-from colors import BLACK, WHITE, BLUE, RED, GREEN
+from colors import BLACK, WHITE, BLUE, RED, GREEN, YELLOW
 from powerups import handle_powerups, update_powerups, handle_shield, update_shield, handle_enlarge, update_enlarge, shoot_laser, update_lasers, SHIELD_WIDTH, SHIELD_HEIGHT, LASER_COOLDOWN, LASER_SIZE, STICKY_SIZE
 
 # Screen dimensions
@@ -144,6 +144,9 @@ while True:
         SCREEN.blit(text, (laser.x, laser.y - 20))
 
     if sticky:
+        pygame.draw.rect(SCREEN, YELLOW, sticky)
+        text = font.render("T", True, WHITE)
+        SCREEN.blit(text, (sticky.x + 5, sticky.y + 5))
         pygame.draw.rect(SCREEN, YELLOW, sticky)
         text = font.render("T", True, WHITE)
         SCREEN.blit(text, (sticky.x + 5, sticky.y + 5))
