@@ -68,6 +68,7 @@ SHIELD_DROP_CHANCE = 0.3
 ENLARGE_DROP_CHANCE = 0.2
 shield = None
 shield_active = False
+shield_activation_time = 0
 enlarge = None
 enlarge_active = False
 SHIELD_WIDTH = 100
@@ -145,9 +146,13 @@ while True:
         if shield.colliderect(paddle):
             shield_active = True
             shield_sound.play()
+            shield_activation_time = pygame.time.get_ticks()
             shield = None
         elif shield.y > SCREEN_HEIGHT:
             shield = None
+
+    if shield_active and pygame.time.get_ticks() - shield_activation_time > 30000:  # 30 seconds
+        shield_active = False
 
     if enlarge:
         enlarge.y += 5
