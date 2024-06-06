@@ -8,6 +8,10 @@ pygame.init()
 
 from sound import paddle_hit_sound, brick_hit_sound, game_over_sound
 from start_screen import show_start_screen
+from paddle import create_paddle, move_paddle, draw_paddle
+from ball import create_ball, move_ball, draw_ball
+from brick import create_bricks, draw_brick
+from colors import BLACK
 
 # Screen dimensions
 SCREEN_WIDTH = 800
