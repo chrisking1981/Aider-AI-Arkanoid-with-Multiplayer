@@ -17,12 +17,6 @@ pygame.display.set_caption("Arkanoid")
 
 from screen import maintain_aspect_ratio
 
-# Colors
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
 
 # Paddle
 PADDLE_WIDTH = 100
@@ -33,90 +27,10 @@ PADDLE_SPEED = 10
 BALL_SIZE = 10
 BALL_SPEED = 5
 
-# Brick
-BRICK_WIDTH = 75
-BRICK_HEIGHT = 20
-BRICK_ROWS = 5
-BRICK_COLUMNS = 10
 
-def create_paddle():
-    return pygame.Rect((SCREEN_WIDTH // 2) - (PADDLE_WIDTH // 2), SCREEN_HEIGHT - 30, PADDLE_WIDTH, PADDLE_HEIGHT)
 
-def move_paddle(paddle, dx):
-    paddle.x += dx
-    if paddle.x < 0:
-        paddle.x = 0
-    if paddle.x > SCREEN_WIDTH - PADDLE_WIDTH:
-        paddle.x = SCREEN_WIDTH - PADDLE_WIDTH
 
-def draw_paddle(paddle, scale_x, scale_y):
-    scaled_paddle = pygame.Rect(paddle.x * scale_x, paddle.y * scale_y, paddle.width * scale_x, paddle.height * scale_y)
-    pygame.draw.rect(SCREEN, WHITE, scaled_paddle)
 
-def create_ball():
-    rect = pygame.Rect(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, BALL_SIZE, BALL_SIZE)
-    dx = BALL_SPEED * random.choice((1, -1))
-    dy = BALL_SPEED * random.choice((1, -1))
-    return rect, dx, dy
-
-def move_ball(ball, dx, dy):
-    ball.x += dx
-    ball.y += dy
-
-    if ball.left <= 0 or ball.right >= SCREEN_WIDTH:
-        dx = -dx
-    if ball.top <= 0:
-        dy = -dy
-
-    return dx, dy
-
-def draw_ball(ball, scale_x, scale_y):
-    scaled_ball = pygame.Rect(ball.x * scale_x, ball.y * scale_y, ball.width * scale_x, ball.height * scale_y)
-    pygame.draw.ellipse(SCREEN, WHITE, scaled_ball)
-
-def create_brick(x, y):
-    return pygame.Rect(x, y, BRICK_WIDTH, BRICK_HEIGHT)
-
-def draw_brick(brick, scale_x, scale_y):
-    scaled_brick = pygame.Rect(brick.x * scale_x, brick.y * scale_y, brick.width * scale_x, brick.height * scale_y)
-    pygame.draw.rect(SCREEN, BLUE, scaled_brick)
-
-def create_bricks():
-    bricks = []
-    for row in range(BRICK_ROWS):
-        for col in range(BRICK_COLUMNS):
-            brick = create_brick(col * (BRICK_WIDTH + 10) + 35, row * (BRICK_HEIGHT + 10) + 35)
-            bricks.append(brick)
-    return bricks
-
-def show_start_screen():
-    scale_x = SCREEN_WIDTH / 800
-    scale_y = SCREEN_HEIGHT / 600
-
-    SCREEN.fill(BLACK)
-    font = pygame.font.Font(None, 74)
-    text = font.render("Arkanoid", True, WHITE)
-    SCREEN.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2 - 50))
-    font = pygame.font.Font(None, 36)
-    text = font.render("Press SPACE to start", True, WHITE)
-    SCREEN.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2 + 50))
-    text = font.render("Press Q to quit during the game", True, WHITE)
-    SCREEN.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2 + 100))
-    pygame.display.flip()
-
-    waiting = True
-    while waiting:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    waiting = False
-                if event.key == pygame.K_q:
-                    pygame.quit()
-                    sys.exit()
-                    waiting = False
 
 show_start_screen()
 
