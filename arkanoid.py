@@ -134,7 +134,7 @@ while True:
         bricks = create_bricks()
 
     for laser in lasers[:]:
-        laser.y -= 10
+        laser.y -= 15
         if laser.y < 0:
             lasers.remove(laser)
         else:
