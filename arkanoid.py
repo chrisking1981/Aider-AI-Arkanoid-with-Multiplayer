@@ -99,9 +99,7 @@ while True:
             ball_dy = -ball_dy
             bricks.remove(brick)
             brick_hit_sound.play()
-    if ball.colliderect(paddle) or (shield_active and ball.colliderect(pygame.Rect(0, SCREEN_HEIGHT - SHIELD_HEIGHT, SCREEN_WIDTH, SHIELD_HEIGHT))):
-        ball_dy = -ball_dy
-        paddle_hit_sound.play()
+        shield, enlarge, laser = handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
 
     if ball.bottom >= SCREEN_HEIGHT:
         game_over_sound.play()
