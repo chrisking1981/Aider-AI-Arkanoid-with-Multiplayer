@@ -86,9 +86,9 @@ while True:
     if ball_stuck:
         ball.x = paddle.x + paddle.width // 2 - BALL_SIZE // 2
         ball.y = paddle.y - BALL_SIZE
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_s]:
             ball_stuck = False
-    if laser_active and keys[pygame.K_SPACE]:
+    if laser_active and keys[pygame.K_s]:
         last_shot_time = shoot_laser(paddle, lasers, last_shot_time, LASER_COOLDOWN, laser_sound)
 
     if not ball_stuck:

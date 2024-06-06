@@ -11,7 +11,7 @@ def show_start_screen(SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT):
     text = font.render("Arkanoid", True, WHITE)
     SCREEN.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2 - 50))
     font = pygame.font.Font(None, 36)
-    text = font.render("Press SPACE to start", True, WHITE)
+    text = font.render("Press S to start", True, WHITE)
     SCREEN.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2 + 50))
     text = font.render("Press Q to quit during the game", True, WHITE)
     SCREEN.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2 + 100))
@@ -24,7 +24,7 @@ def show_start_screen(SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_s:
                     waiting = False
                 if event.key == pygame.K_q:
                     pygame.quit()
