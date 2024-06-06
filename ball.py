@@ -1,7 +1,7 @@
 import pygame
 import random
-def create_ball(screen_width, screen_height, ball_size, ball_speed):
-    rect = pygame.Rect(screen_width // 2, screen_height // 2, ball_size, ball_size)
+def create_ball(screen_width, screen_height, ball_size, ball_speed, paddle):
+    rect = pygame.Rect(paddle.x + paddle.width // 2 - ball_size // 2, paddle.y - ball_size, ball_size, ball_size)
     dx = ball_speed * random.choice((1, -1))
     dy = ball_speed * random.choice((1, -1))
     return rect, dx, dy
