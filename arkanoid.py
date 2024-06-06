@@ -11,7 +11,7 @@ from start_screen import show_start_screen
 from paddle import create_paddle, move_paddle, draw_paddle
 from ball import create_ball, move_ball, draw_ball
 from brick import create_bricks, draw_brick
-from colors import BLACK, WHITE, BLUE, GREEN, RED
+from colors import BLACK, WHITE, BLUE, RED
 
 # Screen dimensions
 SCREEN_WIDTH = 800
@@ -193,7 +193,7 @@ while True:
         SCREEN.blit(text, (shield.x, shield.y - 20))
         
     if enlarge:
-        pygame.draw.rect(SCREEN, GREEN, enlarge)
+        pygame.draw.rect(SCREEN, RED, enlarge)
         text = font.render("Enlarge", True, WHITE)
         SCREEN.blit(text, (enlarge.x, enlarge.y - 20))
         
