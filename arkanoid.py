@@ -116,47 +116,48 @@ def show_start_screen():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     waiting = False
-    clock = pygame.time.Clock()
-    paddle = create_paddle()
-    ball, ball_dx, ball_dy = create_ball()
-    bricks = create_bricks()
 
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+show_start_screen()
 
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            move_paddle(paddle, -PADDLE_SPEED)
-        if keys[pygame.K_RIGHT]:
-            move_paddle(paddle, PADDLE_SPEED)
+clock = pygame.time.Clock()
+paddle = create_paddle()
+ball, ball_dx, ball_dy = create_ball()
+bricks = create_bricks()
 
-        ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy)
-
-        if ball.colliderect(paddle):
-            ball_dy = -ball_dy
-            paddle_hit_sound.play()
-
-        for brick in bricks[:]:
-            if ball.colliderect(brick):
-                ball_dy = -ball_dy
-                bricks.remove(brick)
-                brick_hit_sound.play()
-
-        if ball.bottom >= SCREEN_HEIGHT:
-            game_over_sound.play()
-            pygame.time.wait(2000)  # Wait for 2 seconds to let the sound play
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
-        SCREEN.fill(BLACK)
-        draw_paddle(paddle)
-        draw_ball(ball)
-        for brick in bricks:
-            draw_brick(brick)
-        pygame.display.flip()
-        clock.tick(60)
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        move_paddle(paddle, -PADDLE_SPEED)
+    if keys[pygame.K_RIGHT]:
+        move_paddle(paddle, PADDLE_SPEED)
 
+    ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy)
 
+    if ball.colliderect(paddle):
+        ball_dy = -ball_dy
+        paddle_hit_sound.play()
+
+    for brick in bricks[:]:
+        if ball.colliderect(brick):
+            ball_dy = -ball_dy
+            bricks.remove(brick)
+            brick_hit_sound.play()
+
+    if ball.bottom >= SCREEN_HEIGHT:
+        game_over_sound.play()
+        pygame.time.wait(2000)  # Wait for 2 seconds to let the sound play
+        pygame.quit()
+        sys.exit()
+
+    SCREEN.fill(BLACK)
+    draw_paddle(paddle)
+    draw_ball(ball)
+    for brick in bricks:
+        draw_brick(brick)
+    pygame.display.flip()
+    clock.tick(60)
