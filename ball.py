@@ -1,24 +1,22 @@
 import pygame
 import random
-from arkanoid import SCREEN, WHITE, BALL_SIZE, BALL_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT
-
-def create_ball():
-    rect = pygame.Rect(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, BALL_SIZE, BALL_SIZE)
-    dx = BALL_SPEED * random.choice((1, -1))
-    dy = BALL_SPEED * random.choice((1, -1))
+def create_ball(screen_width, screen_height, ball_size, ball_speed):
+    rect = pygame.Rect(screen_width // 2, screen_height // 2, ball_size, ball_size)
+    dx = ball_speed * random.choice((1, -1))
+    dy = ball_speed * random.choice((1, -1))
     return rect, dx, dy
 
-def move_ball(ball, dx, dy):
+def move_ball(ball, dx, dy, screen_width):
     ball.x += dx
     ball.y += dy
 
-    if ball.left <= 0 or ball.right >= SCREEN_WIDTH:
+    if ball.left <= 0 or ball.right >= screen_width:
         dx = -dx
     if ball.top <= 0:
         dy = -dy
 
     return dx, dy
 
-def draw_ball(ball, scale_x, scale_y):
+def draw_ball(screen, ball, color, scale_x, scale_y):
     scaled_ball = pygame.Rect(ball.x * scale_x, ball.y * scale_y, ball.width * scale_x, ball.height * scale_y)
-    pygame.draw.ellipse(SCREEN, WHITE, scaled_ball)
+    pygame.draw.ellipse(screen, color, scaled_ball)

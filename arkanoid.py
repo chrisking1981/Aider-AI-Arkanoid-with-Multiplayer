@@ -41,7 +41,7 @@ show_start_screen(SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 clock = pygame.time.Clock()
 paddle = create_paddle(SCREEN_WIDTH, SCREEN_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT)
-ball, ball_dx, ball_dy = create_ball()
+ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, BALL_SPEED)
 bricks = create_bricks()
 
 while True:
@@ -61,7 +61,7 @@ while True:
     if keys[pygame.K_RIGHT]:
         move_paddle(paddle, PADDLE_SPEED, SCREEN_WIDTH, PADDLE_WIDTH)
 
-    ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy)
+    ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH)
 
     if ball.colliderect(paddle):
         ball_dy = -ball_dy
@@ -83,7 +83,7 @@ while True:
 
     SCREEN.fill(BLACK)
     draw_paddle(SCREEN, paddle, WHITE, scale_x, scale_y)
-    draw_ball(ball, scale_x, scale_y)
+    draw_ball(SCREEN, ball, WHITE, scale_x, scale_y)
     for brick in bricks:
         draw_brick(brick, scale_x, scale_y)
     pygame.display.flip()
