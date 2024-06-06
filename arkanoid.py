@@ -95,7 +95,27 @@ def create_bricks():
             bricks.append(brick)
     return bricks
 
-def main():
+def show_start_screen():
+    SCREEN.fill(BLACK)
+    font = pygame.font.Font(None, 74)
+    text = font.render("Arkanoid", True, WHITE)
+    SCREEN.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2 - 50))
+    font = pygame.font.Font(None, 36)
+    text = font.render("Press SPACE to start", True, WHITE)
+    SCREEN.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2 + 50))
+    text = font.render("Press R to restart or Q to quit during the game", True, WHITE)
+    SCREEN.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2 + 100))
+    pygame.display.flip()
+
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    waiting = False
     clock = pygame.time.Clock()
     paddle = Paddle()
     ball = Ball()
