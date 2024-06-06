@@ -142,6 +142,8 @@ ball, ball_dx, ball_dy = create_ball()
 bricks = create_bricks()
 
 while True:
+    scale_x = SCREEN_WIDTH / 800
+    scale_y = SCREEN_HEIGHT / 600
 
     for event in pygame.event.get():
         if event.type == pygame.VIDEORESIZE:
