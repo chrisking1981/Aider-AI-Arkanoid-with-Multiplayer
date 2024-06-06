@@ -7,10 +7,12 @@ SHIELD_HEIGHT = 20
 SHIELD_SIZE = 20
 LASER_SIZE = 20
 LASER_DROP_CHANCE = 0.1
+STICKY_SIZE = 20
+STICKY_DROP_CHANCE = 0.15
 
 def handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound):
     if not (shield or enlarge or laser):
-        powerups = ['shield', 'enlarge', 'laser']
+        powerups = ['shield', 'enlarge', 'laser', 'sticky']
         selected_powerup = random.choice(powerups)
         if selected_powerup == 'shield':
             shield = pygame.Rect(brick.x + brick.width // 2 - SHIELD_SIZE // 2, brick.y, SHIELD_SIZE, SHIELD_SIZE)
@@ -18,9 +20,9 @@ def handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarg
             enlarge = pygame.Rect(brick.x + brick.width // 2 - SHIELD_SIZE // 2, brick.y, SHIELD_SIZE, SHIELD_SIZE)
         elif selected_powerup == 'laser':
             laser = pygame.Rect(brick.x + brick.width // 2 - LASER_SIZE // 2, brick.y, LASER_SIZE, LASER_SIZE)
-    return shield, enlarge, laser
+    return shield, enlarge, laser, sticky
 
-def update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound, countdown_start_time, SCREEN_HEIGHT):
+def update_powerups(shield, enlarge, laser, sticky, paddle, shield_active, enlarge_active, laser_active, sticky_active, shield_sound, enlarge_sound, laser_sound, sticky_sound, countdown_start_time, SCREEN_HEIGHT):
     if shield:
         shield.y += 5
         if shield.colliderect(paddle):
@@ -49,9 +51,18 @@ def update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_activ
         elif laser.y > SCREEN_HEIGHT:
             laser = None
 
-    return shield, enlarge, laser, shield_active, enlarge_active, laser_active, countdown_start_time
+    if sticky:
+        sticky.y += 5
+        if sticky.colliderect(paddle):
+            sticky_active = True
+            sticky_sound.play()
+            sticky = None
+        elif sticky.y > SCREEN_HEIGHT:
+            sticky = None
 
-def draw_powerups(screen, font, shield, enlarge, laser):
+    return shield, enlarge, laser, sticky, shield_active, enlarge_active, laser_active, sticky_active, countdown_start_time
+
+def draw_powerups(screen, font, shield, enlarge, laser, sticky):
     if shield:
         pygame.draw.rect(screen, GREEN, shield)
         text = font.render("S", True, WHITE)
@@ -139,3 +150,7 @@ def update_enlarge(enlarge, paddle, enlarge_active, enlarge_sound, SCREEN_HEIGHT
         elif enlarge.y > SCREEN_HEIGHT:
             enlarge = None
     return enlarge, enlarge_active
+    if sticky:
+        pygame.draw.rect(screen, YELLOW, sticky)
+        text = font.render("T", True, WHITE)
+        screen.blit(text, (sticky.x + 5, sticky.y + 5))

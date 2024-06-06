@@ -12,7 +12,7 @@ from paddle import create_paddle, move_paddle, draw_paddle
 from ball import create_ball, move_ball, draw_ball
 from brick import create_bricks, draw_brick
 from colors import BLACK, WHITE, BLUE, RED, GREEN
-from powerups import handle_powerups, update_powerups, handle_shield, update_shield, handle_enlarge, update_enlarge, shoot_laser, update_lasers, SHIELD_WIDTH, SHIELD_HEIGHT, LASER_COOLDOWN, LASER_SIZE
+from powerups import handle_powerups, update_powerups, handle_shield, update_shield, handle_enlarge, update_enlarge, shoot_laser, update_lasers, SHIELD_WIDTH, SHIELD_HEIGHT, LASER_COOLDOWN, LASER_SIZE, STICKY_SIZE
 
 # Screen dimensions
 SCREEN_WIDTH = 800
@@ -52,7 +52,8 @@ ball_stuck = True
 bricks = create_bricks()
 
 
-laser = None
+sticky = None
+sticky_active = False
 lasers = []
 laser_active = False
 
@@ -86,7 +87,8 @@ while True:
         ball.x = paddle.x + paddle.width // 2 - BALL_SIZE // 2
         ball.y = paddle.y - BALL_SIZE
         if keys[pygame.K_f]:
-            ball_dx, ball_dy = BALL_SPEED * random.choice((1, -1)), -BALL_SPEED  # Launch the ball
+            if not sticky_active:
+                ball_dx, ball_dy = BALL_SPEED * random.choice((1, -1)), -BALL_SPEED  # Launch the ball
             ball_stuck = False
             ball_dx, ball_dy = BALL_SPEED * random.choice((1, -1)), -BALL_SPEED  # Launch the ball
     else:
@@ -97,7 +99,7 @@ while True:
     if not ball_stuck:
         ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH, SCREEN_HEIGHT)
 
-    if not ball_stuck and ball.colliderect(paddle):
+    if not ball_stuck and ball.colliderect(paddle) and not sticky_active:
         ball.bottom = paddle.top  # Adjust ball position to be on top of the paddle
         ball_dy = -ball_dy
         paddle_hit_sound.play()
@@ -113,6 +115,8 @@ while True:
             brick_hit_sound.play()
             shield, enlarge, laser = handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
             break
+        elif sticky_active and ball.colliderect(paddle):
+            ball_stuck = True
 
     if not ball_stuck and ball.bottom >= SCREEN_HEIGHT:
         game_over_sound.play()
@@ -122,9 +126,9 @@ while True:
         ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, BALL_SPEED, paddle)
         bricks = create_bricks()
 
-    lasers, shield, enlarge, laser = update_lasers(lasers, bricks, brick_hit_sound, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
+    lasers, shield, enlarge, laser, sticky = update_lasers(lasers, bricks, brick_hit_sound, paddle, shield, enlarge, laser, sticky, shield_active, enlarge_active, laser_active, sticky_active, shield_sound, enlarge_sound, laser_sound, sticky_sound)
 
-    shield, enlarge, laser, shield_active, enlarge_active, laser_active, countdown_start_time = update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound, countdown_start_time, SCREEN_HEIGHT)
+    shield, enlarge, laser, sticky, shield_active, enlarge_active, laser_active, sticky_active, countdown_start_time = update_powerups(shield, enlarge, laser, sticky, paddle, shield_active, enlarge_active, laser_active, sticky_active, shield_sound, enlarge_sound, laser_sound, sticky_sound, countdown_start_time, SCREEN_HEIGHT)
     shield, shield_active, countdown_start_time = update_shield(shield, paddle, shield_active, shield_sound, countdown_start_time, SCREEN_HEIGHT)
     enlarge, enlarge_active = update_enlarge(enlarge, paddle, enlarge_active, enlarge_sound, SCREEN_HEIGHT)
 
@@ -139,7 +143,10 @@ while True:
         text = font.render("Laser", True, WHITE)
         SCREEN.blit(text, (laser.x, laser.y - 20))
 
-    if shield_active:
+    if sticky:
+        pygame.draw.rect(SCREEN, YELLOW, sticky)
+        text = font.render("T", True, WHITE)
+        SCREEN.blit(text, (sticky.x + 5, sticky.y + 5))
         elapsed_time = pygame.time.get_ticks() - countdown_start_time
         remaining_time = max(0, COUNTDOWN_TIME - elapsed_time)
     else:
