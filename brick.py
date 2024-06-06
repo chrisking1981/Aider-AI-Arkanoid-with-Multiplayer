@@ -1,5 +1,5 @@
 import pygame
-from arkanoid import SCREEN, BLUE
+from colors import BLUE
 
 BRICK_WIDTH = 75
 BRICK_HEIGHT = 20
@@ -9,9 +9,9 @@ BRICK_COLUMNS = 10
 def create_brick(x, y):
     return pygame.Rect(x, y, BRICK_WIDTH, BRICK_HEIGHT)
 
-def draw_brick(brick, scale_x, scale_y):
+def draw_brick(screen, brick, color, scale_x, scale_y):
     scaled_brick = pygame.Rect(brick.x * scale_x, brick.y * scale_y, brick.width * scale_x, brick.height * scale_y)
-    pygame.draw.rect(SCREEN, BLUE, scaled_brick)
+    pygame.draw.rect(screen, color, scaled_brick)
 
 def create_bricks():
     bricks = []
