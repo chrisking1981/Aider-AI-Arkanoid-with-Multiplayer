@@ -15,15 +15,7 @@ ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
 pygame.display.set_caption("Arkanoid")
 
-def maintain_aspect_ratio(event):
-    global SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, ASPECT_RATIO
-    SCREEN_WIDTH = event.w
-    SCREEN_HEIGHT = event.h
-    if SCREEN_WIDTH / SCREEN_HEIGHT > ASPECT_RATIO:
-        SCREEN_WIDTH = int(SCREEN_HEIGHT * ASPECT_RATIO)
-    else:
-        SCREEN_HEIGHT = int(SCREEN_WIDTH / ASPECT_RATIO)
-    SCREEN = pygame.display.set_mode((event.w, event.h), pygame.FULLSCREEN)
+from screen import maintain_aspect_ratio
 
 # Colors
 BLACK = (0, 0, 0)
