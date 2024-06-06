@@ -85,7 +85,7 @@ while True:
     draw_paddle(SCREEN, paddle, WHITE, scale_x, scale_y)
     draw_ball(SCREEN, ball, WHITE, scale_x, scale_y)
     for brick in bricks:
-        draw_brick(brick, scale_x, scale_y)
+        draw_brick(SCREEN, brick, BLUE, scale_x, scale_y)
     pygame.display.flip()
     clock.tick(60)
     clock.tick(60)
