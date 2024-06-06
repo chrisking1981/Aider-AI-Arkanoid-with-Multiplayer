@@ -95,7 +95,7 @@ while True:
     elif keys[pygame.K_SPACE]:
         last_shot_time = shoot_laser(paddle, lasers, last_shot_time, cooldown)
 
-    ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH)
+    ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH, SCREEN_HEIGHT)
 
     if ball.colliderect(paddle):
         ball_dy = -ball_dy

@@ -6,13 +6,16 @@ def create_ball(screen_width, screen_height, ball_size, ball_speed):
     dy = ball_speed * random.choice((1, -1))
     return rect, dx, dy
 
-def move_ball(ball, dx, dy, screen_width):
+def move_ball(ball, dx, dy, screen_width, screen_height):
     ball.x += dx
     ball.y += dy
 
     if ball.left <= 0 or ball.right >= screen_width:
         dx = -dx
     if ball.top <= 0:
+        dy = -dy
+
+    if ball.bottom >= screen_height:
         dy = -dy
 
     return dx, dy
