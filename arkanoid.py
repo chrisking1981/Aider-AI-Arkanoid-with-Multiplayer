@@ -75,9 +75,6 @@ while True:
             pygame.quit()
             sys.exit()
 
-    if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_SPACE and laser_active:
-            last_shot_time = shoot_laser(paddle, lasers, last_shot_time, LASER_COOLDOWN, laser_sound)
 
     scale_x = SCREEN_WIDTH / 800
     scale_y = SCREEN_HEIGHT / 600
