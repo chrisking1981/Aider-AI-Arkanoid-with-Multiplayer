@@ -28,7 +28,7 @@ SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE
 pygame.display.set_caption("Arkanoid")
 
 def maintain_aspect_ratio(event):
-    global SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN
+    global SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN, ASPECT_RATIO
     SCREEN_WIDTH = event.w
     SCREEN_HEIGHT = event.h
     if SCREEN_WIDTH / SCREEN_HEIGHT > ASPECT_RATIO:
@@ -146,35 +146,15 @@ ball, ball_dx, ball_dy = create_ball()
 bricks = create_bricks()
 
 while True:
-    scale_x = SCREEN_WIDTH / 800
-    scale_y = SCREEN_HEIGHT / 600
-
     for event in pygame.event.get():
         if event.type == pygame.VIDEORESIZE:
             maintain_aspect_ratio(event)
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_r:
-                paddle = create_paddle()
-                ball, ball_dx, ball_dy = create_ball()
-                bricks = create_bricks()
-            if event.key == pygame.K_q:
-                pygame.quit()
-                sys.exit()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_r:
-                paddle = create_paddle()
-                ball, ball_dx, ball_dy = create_ball()
-                bricks = create_bricks()
-            if event.key == pygame.K_q:
-                pygame.quit()
-                sys.exit()
+
+    scale_x = SCREEN_WIDTH / 800
+    scale_y = SCREEN_HEIGHT / 600
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
@@ -195,8 +175,6 @@ while True:
             brick_hit_sound.play()
 
     if ball.bottom >= SCREEN_HEIGHT:
-        game_over_sound.play()
-        pygame.time.wait(2000)  # Wait for 2 seconds to let the sound play
         game_over_sound.play()
         pygame.time.wait(2000)  # Wait for 2 seconds to let the sound play
         show_start_screen()
