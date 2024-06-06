@@ -95,30 +95,7 @@ def create_bricks():
             bricks.append(brick)
     return bricks
 
-def show_end_screen():
-    SCREEN.fill(BLACK)
-    font = pygame.font.Font(None, 74)
-    text = font.render("Game Over", True, WHITE)
-    SCREEN.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2 - 50))
-    font = pygame.font.Font(None, 36)
-    text = font.render("Press R to restart or Q to quit", True, WHITE)
-    SCREEN.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2 + 50))
-    pygame.display.flip()
-
-    waiting = True
-    while waiting:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_r:
-                    waiting = False
-                    show_start_screen()
-                    main()
-                if event.key == pygame.K_q:
-                    pygame.quit()
-                    sys.exit()
+def main():
     clock = pygame.time.Clock()
     paddle = Paddle()
     ball = Ball()
@@ -163,4 +140,4 @@ def show_end_screen():
         clock.tick(60)
 
 if __name__ == "__main__":
-    return
+    main()
