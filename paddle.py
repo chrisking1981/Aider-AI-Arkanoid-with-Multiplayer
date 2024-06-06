@@ -3,12 +3,6 @@ import pygame
 def create_paddle(screen_width, screen_height, paddle_width, paddle_height):
     return pygame.Rect((screen_width // 2) - (paddle_width // 2), screen_height - 30, paddle_width, paddle_height)
 
-def move_paddle(paddle, dx, screen_width, paddle_width):
-    paddle.x += dx
-    if paddle.x < 0:
-        paddle.x = 0
-    if paddle.x > screen_width - paddle.width:
-        paddle.x = screen_width - paddle.width
 
 def move_paddle(paddle, dx, screen_width, paddle_width):
     paddle.x += dx

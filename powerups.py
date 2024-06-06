@@ -51,6 +51,22 @@ def update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_activ
 
     return shield, enlarge, laser, shield_active, enlarge_active, laser_active, countdown_start_time
 
+def draw_powerups(screen, font, shield, enlarge, laser):
+    if shield:
+        pygame.draw.rect(screen, GREEN, shield)
+        text = font.render("S", True, WHITE)
+        screen.blit(text, (shield.x + 5, shield.y + 5))
+
+    if enlarge:
+        pygame.draw.rect(screen, BLUE, enlarge)
+        text = font.render("E", True, WHITE)
+        screen.blit(text, (enlarge.x + 5, enlarge.y + 5))
+
+    if laser:
+        pygame.draw.rect(screen, RED, laser)
+        text = font.render("L", True, WHITE)
+        screen.blit(text, (laser.x + 5, laser.y + 5))
+
 # Shield constants
 SHIELD_WIDTH = 20
 SHIELD_HEIGHT = 20
