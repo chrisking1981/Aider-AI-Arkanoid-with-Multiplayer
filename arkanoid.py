@@ -37,6 +37,10 @@ BALL_SPEED = 8
 
 
 
+# Countdown timer
+COUNTDOWN_TIME = 30000  # 30 seconds in milliseconds
+countdown_start_time = 0
+
 show_start_screen(SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 clock = pygame.time.Clock()
@@ -148,13 +152,19 @@ while True:
             shield_sound.play()
             shield_activation_time = pygame.time.get_ticks()
             shield = None
+            countdown_start_time = pygame.time.get_ticks()
         elif shield.y > SCREEN_HEIGHT:
             shield = None
 
     if shield_active and pygame.time.get_ticks() - shield_activation_time > 30000:  # 30 seconds
         shield_active = False
 
-    if enlarge:
+    # Update countdown timer
+    if shield_active:
+        elapsed_time = pygame.time.get_ticks() - countdown_start_time
+        remaining_time = max(0, COUNTDOWN_TIME - elapsed_time)
+    else:
+        remaining_time = 0
         enlarge.y += 5
         if enlarge.colliderect(paddle):
             enlarge_active = True
@@ -190,6 +200,17 @@ while True:
 
     if shield_active:
         pygame.draw.rect(SCREEN, BLUE, (0, SCREEN_HEIGHT - SHIELD_HEIGHT, SCREEN_WIDTH, SHIELD_HEIGHT))
+
+    # Display countdown timer
+    if shield_active:
+        minutes = remaining_time // 60000
+        seconds = (remaining_time % 60000) // 1000
+        timer_text = f"Shield: {minutes:02}:{seconds:02}"
+    else:
+        timer_text = "Shield: 00:00"
+
+    text = font.render(timer_text, True, WHITE)
+    SCREEN.blit(text, (10, 10))
 
     pygame.display.flip()
     clock.tick(60)
