@@ -7,6 +7,13 @@ def move_paddle(paddle, dx, screen_width, paddle_width):
     paddle.x += dx
     if paddle.x < 0:
         paddle.x = 0
+    if paddle.x > screen_width - paddle.width:
+        paddle.x = screen_width - paddle.width
+
+def move_paddle(paddle, dx, screen_width, paddle_width):
+    paddle.x += dx
+    if paddle.x < 0:
+        paddle.x = 0
     if paddle.x > screen_width - paddle_width:
         paddle.x = screen_width - paddle_width
 

@@ -175,9 +175,9 @@ while True:
             enlarge = None
 
     if enlarge_active:
-        PADDLE_WIDTH = 150  # Enlarged paddle width
+        paddle.width = PADDLE_WIDTH * 2  # Enlarged paddle width
     else:
-        PADDLE_WIDTH = 100  # Default paddle width
+        paddle.width = PADDLE_WIDTH  # Default paddle width
 
     SCREEN.fill(BLACK)
     paddle_color = RED if enlarge_active else WHITE
