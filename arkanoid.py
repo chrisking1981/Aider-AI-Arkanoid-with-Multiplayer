@@ -26,11 +26,11 @@ from screen import maintain_aspect_ratio
 # Paddle
 PADDLE_WIDTH = 100
 PADDLE_HEIGHT = 10
-PADDLE_SPEED = 10
+PADDLE_SPEED = 15
 
 # Ball
 BALL_SIZE = 10
-BALL_SPEED = 5
+BALL_SPEED = 8
 
 
 
