@@ -35,7 +35,7 @@ def maintain_aspect_ratio(event):
         SCREEN_WIDTH = int(SCREEN_HEIGHT * ASPECT_RATIO)
     else:
         SCREEN_HEIGHT = int(SCREEN_WIDTH / ASPECT_RATIO)
-    SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
+    SCREEN = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
 
 # Colors
 BLACK = (0, 0, 0)
@@ -188,4 +188,5 @@ while True:
     for brick in bricks:
         draw_brick(brick, scale_x, scale_y)
     pygame.display.flip()
+    clock.tick(60)
     clock.tick(60)
