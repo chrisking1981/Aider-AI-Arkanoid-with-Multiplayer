@@ -129,10 +129,6 @@ ball, ball_dx, ball_dy = create_ball()
 bricks = create_bricks()
 
 while True:
-    keys = pygame.key.get_pressed()
-    if event.type == pygame.QUIT:
-        pygame.quit()
-        sys.exit()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
