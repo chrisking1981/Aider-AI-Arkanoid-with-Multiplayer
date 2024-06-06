@@ -166,16 +166,18 @@ while True:
     
     if shield:
         pygame.draw.rect(SCREEN, GREEN, shield)
-        text = font.render("Shield", True, WHITE)
-        SCREEN.blit(text, (shield.x, shield.y - 20))
+        text = font.render("S", True, WHITE)
+        SCREEN.blit(text, (shield.x + 5, shield.y + 5))
         
     if enlarge:
         pygame.draw.rect(SCREEN, BLUE, enlarge)
-        text = font.render("Enlarge", True, WHITE)
-        SCREEN.blit(text, (enlarge.x, enlarge.y - 20))
+        text = font.render("E", True, WHITE)
+        SCREEN.blit(text, (enlarge.x + 5, enlarge.y + 5))
         
     for laser in lasers:
         pygame.draw.rect(SCREEN, RED, laser)
+        text = font.render("L", True, WHITE)
+        SCREEN.blit(text, (laser.x + 5, laser.y + 5))
 
     if shield_active:
         pygame.draw.rect(SCREEN, GREEN, (0, SCREEN_HEIGHT - SHIELD_HEIGHT, SCREEN_WIDTH, SHIELD_HEIGHT))
