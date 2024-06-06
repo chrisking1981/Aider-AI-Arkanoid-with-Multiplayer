@@ -159,8 +159,6 @@ while True:
 
     if laser:
         pygame.draw.rect(SCREEN, RED, laser)
-        text = font.render("L", True, WHITE)
-        SCREEN.blit(text, (laser.x + 5, laser.y + 5))
 
     if shield_active:
         pygame.draw.rect(SCREEN, GREEN, (0, SCREEN_HEIGHT - SHIELD_HEIGHT, SCREEN_WIDTH, SHIELD_HEIGHT))
