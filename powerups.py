@@ -10,8 +10,8 @@ LASER_DROP_CHANCE = 0.1
 STICKY_SIZE = 20
 STICKY_DROP_CHANCE = 0.15
 
-def handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound):
-    if not (shield or enlarge or laser):
+def handle_powerups(brick, paddle, shield, enlarge, laser, sticky, shield_active, enlarge_active, laser_active, sticky_active, shield_sound, enlarge_sound, laser_sound, sticky_sound):
+    if not (shield or enlarge or laser or sticky):
         powerups = ['shield', 'enlarge', 'laser', 'sticky']
         selected_powerup = random.choice(powerups)
         if selected_powerup == 'shield':
@@ -115,7 +115,7 @@ def shoot_laser(paddle, lasers, last_shot_time, cooldown, laser_sound):
         return current_time
     return last_shot_time
 
-def update_lasers(lasers, bricks, brick_hit_sound, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound):
+def update_lasers(lasers, bricks, brick_hit_sound, paddle, shield, enlarge, laser, sticky, shield_active, enlarge_active, laser_active, sticky_active, shield_sound, enlarge_sound, laser_sound, sticky_sound):
     for laser in lasers[:]:
         laser.y -= 15
         if laser.y < 0:
@@ -128,7 +128,7 @@ def update_lasers(lasers, bricks, brick_hit_sound, paddle, shield, enlarge, lase
                     brick_hit_sound.play()
                     shield, enlarge, laser = handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
                     break
-    return lasers, shield, enlarge, laser
+    return lasers, shield, enlarge, laser, sticky
     return lasers
 # Enlarge constants
 ENLARGE_DROP_CHANCE = 0.2
@@ -150,6 +150,10 @@ def update_enlarge(enlarge, paddle, enlarge_active, enlarge_sound, SCREEN_HEIGHT
         elif enlarge.y > SCREEN_HEIGHT:
             enlarge = None
     return enlarge, enlarge_active
+    if sticky:
+        pygame.draw.rect(screen, YELLOW, sticky)
+        text = font.render("T", True, WHITE)
+        screen.blit(text, (sticky.x + 5, sticky.y + 5))
     if sticky:
         pygame.draw.rect(screen, YELLOW, sticky)
         text = font.render("T", True, WHITE)
