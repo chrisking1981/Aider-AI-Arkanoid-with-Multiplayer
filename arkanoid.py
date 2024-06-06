@@ -12,6 +12,7 @@ from paddle import create_paddle, move_paddle, draw_paddle
 from ball import create_ball, move_ball, draw_ball
 from brick import create_bricks, draw_brick
 from colors import BLACK, WHITE, BLUE, RED
+from powerups import handle_powerups, update_powerups
 
 # Screen dimensions
 SCREEN_WIDTH = 800
@@ -65,21 +66,11 @@ lasers = []
 last_shot_time = 0
 cooldown = 125  # Cooldown period in milliseconds
 
-# Power-ups
-SHIELD_WIDTH = 100
-SHIELD_HEIGHT = 10
-SHIELD_DROP_CHANCE = 0.3
-ENLARGE_DROP_CHANCE = 0.2
 shield = None
 shield_active = False
 shield_activation_time = 0
 enlarge = None
 enlarge_active = False
-SHIELD_WIDTH = 100
-SHIELD_HEIGHT = 10
-SHIELD_DROP_CHANCE = 0.3
-shield = None
-shield_active = False
 
 while True:
     for event in pygame.event.get():
@@ -116,10 +107,7 @@ while True:
             ball_dy = -ball_dy
             bricks.remove(brick)
             brick_hit_sound.play()
-            if random.random() < SHIELD_DROP_CHANCE:
-                shield = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
-            elif random.random() < ENLARGE_DROP_CHANCE:
-                enlarge = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
+            shield, enlarge = handle_powerups(bricks, paddle, shield, enlarge, shield_active, enlarge_active, shield_sound, enlarge_sound)
 
     if ball.colliderect(paddle) or (shield_active and ball.colliderect(pygame.Rect(0, SCREEN_HEIGHT - SHIELD_HEIGHT, SCREEN_WIDTH, SHIELD_HEIGHT))):
         ball_dy = -ball_dy
@@ -149,16 +137,7 @@ while True:
                         enlarge = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
                     break
 
-    if shield:
-        shield.y += 5
-        if shield.colliderect(paddle):
-            shield_active = True
-            shield_sound.play()
-            shield_activation_time = pygame.time.get_ticks()
-            shield = None
-            countdown_start_time = pygame.time.get_ticks()
-        elif shield.y > SCREEN_HEIGHT:
-            shield = None
+    shield, enlarge, shield_active, enlarge_active, countdown_start_time = update_powerups(shield, enlarge, paddle, shield_active, enlarge_active, shield_sound, enlarge_sound, countdown_start_time)
 
     if shield_active and pygame.time.get_ticks() - shield_activation_time > 30000:  # 30 seconds
         shield_active = False
@@ -169,14 +148,6 @@ while True:
         remaining_time = max(0, COUNTDOWN_TIME - elapsed_time)
     else:
         remaining_time = 0
-    if enlarge:
-        enlarge.y += 5
-        if enlarge.colliderect(paddle):
-            enlarge_active = True
-            enlarge_sound.play()
-            enlarge = None
-        elif enlarge.y > SCREEN_HEIGHT:
-            enlarge = None
 
     if enlarge_active:
         paddle.width = PADDLE_WIDTH * 2  # Enlarged paddle width
