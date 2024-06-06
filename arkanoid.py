@@ -175,10 +175,10 @@ while True:
         SCREEN.blit(text, (enlarge.x, enlarge.y - 20))
         
     for laser in lasers:
-        pygame.draw.rect(SCREEN, WHITE, laser)
+        pygame.draw.rect(SCREEN, RED, laser)
 
     if shield_active:
-        pygame.draw.rect(SCREEN, BLUE, (0, SCREEN_HEIGHT - SHIELD_HEIGHT, SCREEN_WIDTH, SHIELD_HEIGHT))
+        pygame.draw.rect(SCREEN, GREEN, (0, SCREEN_HEIGHT - SHIELD_HEIGHT, SCREEN_WIDTH, SHIELD_HEIGHT))
 
     # Display countdown timer
     if shield_active:
