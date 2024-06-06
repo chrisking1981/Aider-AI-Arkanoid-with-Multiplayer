@@ -5,19 +5,17 @@ import random
 SHIELD_WIDTH = 20
 SHIELD_HEIGHT = 20
 SHIELD_SIZE = 20
-def handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound):
-    if not (shield or enlarge or laser):
-        powerups = ['shield', 'enlarge', 'laser']
+def handle_powerups(brick, paddle, shield, enlarge, shield_active, enlarge_active, shield_sound, enlarge_sound):
+    if not (shield or enlarge):
+        powerups = ['shield', 'enlarge']
         selected_powerup = random.choice(powerups)
         if selected_powerup == 'shield':
             shield = pygame.Rect(brick.x + brick.width // 2 - SHIELD_SIZE // 2, brick.y, SHIELD_SIZE, SHIELD_SIZE)
         elif selected_powerup == 'enlarge':
             enlarge = pygame.Rect(brick.x + brick.width // 2 - SHIELD_SIZE // 2, brick.y, SHIELD_SIZE, SHIELD_SIZE)
-        elif selected_powerup == 'laser':
-            laser = pygame.Rect(brick.x + brick.width // 2 - SHIELD_SIZE // 2, brick.y, SHIELD_SIZE, SHIELD_SIZE)
-    return shield, enlarge, laser
+    return shield, enlarge
 
-def update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound, countdown_start_time, SCREEN_HEIGHT):
+def update_powerups(shield, enlarge, paddle, shield_active, enlarge_active, shield_sound, enlarge_sound, countdown_start_time, SCREEN_HEIGHT):
     if shield:
         shield.y += 5
         if shield.colliderect(paddle):
@@ -37,16 +35,7 @@ def update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_activ
         elif enlarge.y > SCREEN_HEIGHT:
             enlarge = None
 
-    if laser:
-        laser.y += 5
-        if laser.colliderect(paddle):
-            laser_active = True
-            laser_sound.play()
-            laser = None
-        elif laser.y > SCREEN_HEIGHT:
-            laser = None
-
-    return shield, enlarge, laser, shield_active, enlarge_active, laser_active, countdown_start_time
+    return shield, enlarge, shield_active, enlarge_active, countdown_start_time
 # Shield constants
 SHIELD_WIDTH = 20
 SHIELD_HEIGHT = 20
