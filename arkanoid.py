@@ -5,6 +5,11 @@ import random
 # Initialize Pygame
 pygame.init()
 
+# Load sounds
+paddle_hit_sound = pygame.mixer.Sound("paddle_hit.wav")
+brick_hit_sound = pygame.mixer.Sound("brick_hit.wav")
+game_over_sound = pygame.mixer.Sound("game_over.wav")
+
 # Screen dimensions
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -102,13 +107,17 @@ def main():
 
         if ball.rect.colliderect(paddle.rect):
             ball.dy = -ball.dy
+            paddle_hit_sound.play()
 
         for brick in bricks[:]:
             if ball.rect.colliderect(brick.rect):
                 ball.dy = -ball.dy
                 bricks.remove(brick)
+                brick_hit_sound.play()
 
         if ball.rect.bottom >= SCREEN_HEIGHT:
+            game_over_sound.play()
+            pygame.time.wait(2000)  # Wait for 2 seconds to let the sound play
             pygame.quit()
             sys.exit()
 
