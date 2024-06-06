@@ -75,6 +75,10 @@ while True:
             pygame.quit()
             sys.exit()
 
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_SPACE and laser_active:
+            last_shot_time = shoot_laser(paddle, lasers, last_shot_time, LASER_COOLDOWN, laser_sound)
+
     scale_x = SCREEN_WIDTH / 800
     scale_y = SCREEN_HEIGHT / 600
 
@@ -93,8 +97,6 @@ while True:
             ball_dx, ball_dy = BALL_SPEED * random.choice((1, -1)), -BALL_SPEED  # Launch the ball
     else:
         ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH, SCREEN_HEIGHT)
-    if laser_active and keys[pygame.K_s]:
-        last_shot_time = shoot_laser(paddle, lasers, last_shot_time, LASER_COOLDOWN, laser_sound)
 
     if not ball_stuck:
         ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -126,7 +128,6 @@ while True:
         ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, BALL_SPEED, paddle)
         bricks = create_bricks()
 
-    lasers, shield, enlarge, laser, sticky = update_lasers(lasers, bricks, brick_hit_sound, paddle, shield, enlarge, laser, sticky, shield_active, enlarge_active, laser_active, sticky_active, shield_sound, enlarge_sound, laser_sound, sticky_sound)
 
     shield, enlarge, laser, sticky, shield_active, enlarge_active, laser_active, sticky_active, countdown_start_time = update_powerups(shield, enlarge, laser, sticky, paddle, shield_active, enlarge_active, laser_active, sticky_active, shield_sound, enlarge_sound, laser_sound, sticky_sound, countdown_start_time, SCREEN_HEIGHT)
     shield, shield_active, countdown_start_time = update_shield(shield, paddle, shield_active, shield_sound, countdown_start_time, SCREEN_HEIGHT)
@@ -167,8 +168,6 @@ while True:
     for brick in bricks:
         draw_brick(SCREEN, brick, BLUE, scale_x, scale_y)
     
-    for laser in lasers:
-        pygame.draw.rect(SCREEN, RED, laser)
         
     if shield:
         pygame.draw.rect(SCREEN, GREEN, shield)
