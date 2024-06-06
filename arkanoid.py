@@ -166,10 +166,8 @@ while True:
                 sys.exit()
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
         move_paddle(paddle, -PADDLE_SPEED)
     if keys[pygame.K_RIGHT]:
-        move_paddle(paddle, PADDLE_SPEED)
         move_paddle(paddle, PADDLE_SPEED)
 
     ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy)
