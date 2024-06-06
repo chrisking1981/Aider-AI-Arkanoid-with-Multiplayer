@@ -113,7 +113,7 @@ while True:
             ball_dy = -ball_dy
             bricks.remove(brick)
             brick_hit_sound.play()
-            shield, enlarge, laser = handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
+            shield, enlarge, laser, sticky = handle_powerups(brick, paddle, shield, enlarge, laser, sticky, shield_active, enlarge_active, laser_active, sticky_active, shield_sound, enlarge_sound, laser_sound, sticky_sound)
             break
         elif sticky_active and ball.colliderect(paddle):
             ball_stuck = True
