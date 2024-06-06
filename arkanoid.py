@@ -119,7 +119,7 @@ while True:
         pygame.time.wait(2000)  # Wait for 2 seconds to let the sound play
         show_start_screen(SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT)
         paddle = create_paddle(SCREEN_WIDTH, SCREEN_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT)
-        ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, BALL_SPEED)
+        ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, BALL_SPEED, paddle)
         bricks = create_bricks()
 
     lasers, shield, enlarge, laser = update_lasers(lasers, bricks, brick_hit_sound, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
