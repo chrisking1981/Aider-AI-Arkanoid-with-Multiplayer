@@ -50,3 +50,27 @@ def update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_activ
             laser = None
 
     return shield, enlarge, laser, shield_active, enlarge_active, laser_active, countdown_start_time
+# Shield constants
+SHIELD_WIDTH = 20
+SHIELD_HEIGHT = 20
+SHIELD_SIZE = 20
+SHIELD_DROP_CHANCE = 0.3
+
+def handle_shield(brick, shield):
+    if not shield:
+        drop_chance = random.random()
+        if drop_chance < SHIELD_DROP_CHANCE:
+            shield = pygame.Rect(brick.x + brick.width // 2 - SHIELD_SIZE // 2, brick.y, SHIELD_SIZE, SHIELD_SIZE)
+    return shield
+
+def update_shield(shield, paddle, shield_active, shield_sound, countdown_start_time, SCREEN_HEIGHT):
+    if shield:
+        shield.y += 5
+        if shield.colliderect(paddle):
+            shield_active = True
+            shield_sound.play()
+            shield = None
+            countdown_start_time = pygame.time.get_ticks()
+        elif shield.y > SCREEN_HEIGHT:
+            shield = None
+    return shield, shield_active, countdown_start_time

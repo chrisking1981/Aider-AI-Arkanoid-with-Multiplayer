@@ -12,7 +12,7 @@ from paddle import create_paddle, move_paddle, draw_paddle
 from ball import create_ball, move_ball, draw_ball
 from brick import create_bricks, draw_brick
 from colors import BLACK, WHITE, BLUE, RED, GREEN
-from powerups import handle_powerups, update_powerups, SHIELD_WIDTH, SHIELD_HEIGHT, SHIELD_DROP_CHANCE, ENLARGE_DROP_CHANCE, LASER_DROP_CHANCE
+from powerups import handle_powerups, update_powerups, handle_shield, update_shield, SHIELD_WIDTH, SHIELD_HEIGHT, SHIELD_DROP_CHANCE, ENLARGE_DROP_CHANCE, LASER_DROP_CHANCE
 
 # Screen dimensions
 SCREEN_WIDTH = 800
@@ -109,6 +109,7 @@ while True:
             bricks.remove(brick)
             brick_hit_sound.play()
             shield, enlarge, laser = handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
+            shield = handle_shield(brick, shield)
 
     if ball.colliderect(paddle) or (shield_active and ball.colliderect(pygame.Rect(0, SCREEN_HEIGHT - SHIELD_HEIGHT, SCREEN_WIDTH, SHIELD_HEIGHT))):
         ball_dy = -ball_dy
@@ -136,6 +137,7 @@ while True:
                     break
 
     shield, enlarge, laser, shield_active, enlarge_active, laser_active, countdown_start_time = update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound, countdown_start_time, SCREEN_HEIGHT)
+    shield, shield_active, countdown_start_time = update_shield(shield, paddle, shield_active, shield_sound, countdown_start_time, SCREEN_HEIGHT)
 
     if shield_active and pygame.time.get_ticks() - shield_activation_time > 30000:  # 30 seconds
         shield_active = False
