@@ -42,6 +42,7 @@ BALL_SPEED = 8
 COUNTDOWN_TIME = 30000  # 30 seconds in milliseconds
 countdown_start_time = 0
 
+font = pygame.font.Font(None, 24)
 show_start_screen(SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 clock = pygame.time.Clock()
@@ -106,7 +107,7 @@ while True:
             ball_dy = -ball_dy
             bricks.remove(brick)
             brick_hit_sound.play()
-            shield, enlarge, laser = handle_powerups(bricks, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
+            shield, enlarge, laser = handle_powerups(bricks, paddle, shield, enlarge, None, shield_active, enlarge_active, False, shield_sound, enlarge_sound, laser_sound)
 
     if ball.colliderect(paddle) or (shield_active and ball.colliderect(pygame.Rect(0, SCREEN_HEIGHT - SHIELD_HEIGHT, SCREEN_WIDTH, SHIELD_HEIGHT))):
         ball_dy = -ball_dy
@@ -161,7 +162,6 @@ while True:
     draw_ball(SCREEN, ball, WHITE, scale_x, scale_y)
     for brick in bricks:
         draw_brick(SCREEN, brick, BLUE, scale_x, scale_y)
-    font = pygame.font.Font(None, 24)
     
     if shield:
         pygame.draw.rect(SCREEN, BLUE, shield)
