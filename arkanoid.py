@@ -165,7 +165,7 @@ while True:
         draw_brick(SCREEN, brick, BLUE, scale_x, scale_y)
     
     if shield:
-        pygame.draw.rect(SCREEN, BLUE, shield)
+        pygame.draw.rect(SCREEN, GREEN, shield)
         text = font.render("Shield", True, WHITE)
         SCREEN.blit(text, (shield.x, shield.y - 20))
         
