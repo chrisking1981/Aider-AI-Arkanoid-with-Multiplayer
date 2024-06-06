@@ -51,27 +51,6 @@ def update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_activ
 
     return shield, enlarge, laser, shield_active, enlarge_active, laser_active, countdown_start_time
 
-def update_powerups(shield, enlarge, paddle, shield_active, enlarge_active, shield_sound, enlarge_sound, countdown_start_time, SCREEN_HEIGHT):
-    if shield:
-        shield.y += 5
-        if shield.colliderect(paddle):
-            shield_active = True
-            shield_sound.play()
-            shield = None
-            countdown_start_time = pygame.time.get_ticks()
-        elif shield.y > SCREEN_HEIGHT:
-            shield = None
-
-    if enlarge:
-        enlarge.y += 5
-        if enlarge.colliderect(paddle):
-            enlarge_active = True
-            enlarge_sound.play()
-            enlarge = None
-        elif enlarge.y > SCREEN_HEIGHT:
-            enlarge = None
-
-    return shield, enlarge, shield_active, enlarge_active, countdown_start_time
 # Shield constants
 SHIELD_WIDTH = 20
 SHIELD_HEIGHT = 20
