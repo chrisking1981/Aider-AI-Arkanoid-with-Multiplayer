@@ -37,7 +37,7 @@ BALL_SPEED = 5
 
 
 
-show_start_screen()
+show_start_screen(SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 clock = pygame.time.Clock()
 paddle = create_paddle()

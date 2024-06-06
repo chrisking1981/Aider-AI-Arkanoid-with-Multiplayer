@@ -1,8 +1,8 @@
 import pygame
 import sys
-from arkanoid import SCREEN, BLACK, WHITE, SCREEN_WIDTH, SCREEN_HEIGHT
+from colors import BLACK, WHITE
 
-def show_start_screen():
+def show_start_screen(SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT):
     scale_x = SCREEN_WIDTH / 800
     scale_y = SCREEN_HEIGHT / 600
 
