@@ -165,12 +165,13 @@ while True:
         remaining_time = max(0, COUNTDOWN_TIME - elapsed_time)
     else:
         remaining_time = 0
+    if enlarge:
         enlarge.y += 5
-        if enlarge.colliderect(paddle):
+        if enlarge and enlarge.colliderect(paddle):
             enlarge_active = True
             enlarge_sound.play()
             enlarge = None
-        elif enlarge.y > SCREEN_HEIGHT:
+        elif enlarge and enlarge.y > SCREEN_HEIGHT:
             enlarge = None
 
     if enlarge_active:
