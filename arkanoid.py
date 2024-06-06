@@ -1,14 +1,21 @@
 import pygame
 import sys
 import random
+import numpy as np
 
 # Initialize Pygame
 pygame.init()
 
-# Load sounds
-paddle_hit_sound = pygame.mixer.Sound("paddle_hit.wav")
-brick_hit_sound = pygame.mixer.Sound("brick_hit.wav")
-game_over_sound = pygame.mixer.Sound("game_over.wav")
+# Generate sounds
+def generate_sound(frequency, duration, volume=0.5, sample_rate=44100):
+    t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
+    wave = 32767 * volume * np.sin(2 * np.pi * frequency * t)
+    sound_array = np.array(wave, dtype=np.int16)
+    return pygame.sndarray.make_sound(sound_array)
+
+paddle_hit_sound = generate_sound(440, 0.1)
+brick_hit_sound = generate_sound(880, 0.1)
+game_over_sound = generate_sound(220, 0.5)
 
 # Screen dimensions
 SCREEN_WIDTH = 800
