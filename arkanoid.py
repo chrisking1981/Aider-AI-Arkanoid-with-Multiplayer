@@ -11,7 +11,7 @@ from start_screen import show_start_screen
 from paddle import create_paddle, move_paddle, draw_paddle
 from ball import create_ball, move_ball, draw_ball
 from brick import create_bricks, draw_brick
-from colors import BLACK, WHITE, BLUE, GREEN
+from colors import BLACK, WHITE, BLUE, GREEN, RED
 
 # Screen dimensions
 SCREEN_WIDTH = 800
@@ -167,7 +167,7 @@ while True:
         remaining_time = 0
     if enlarge:
         enlarge.y += 5
-        if enlarge and enlarge.colliderect(paddle):
+        if enlarge.colliderect(paddle):
             enlarge_active = True
             enlarge_sound.play()
             enlarge = None
@@ -180,7 +180,8 @@ while True:
         PADDLE_WIDTH = 100  # Default paddle width
 
     SCREEN.fill(BLACK)
-    draw_paddle(SCREEN, paddle, WHITE, scale_x, scale_y)
+    paddle_color = RED if enlarge_active else WHITE
+    draw_paddle(SCREEN, paddle, paddle_color, scale_x, scale_y)
     draw_ball(SCREEN, ball, WHITE, scale_x, scale_y)
     for brick in bricks:
         draw_brick(SCREEN, brick, BLUE, scale_x, scale_y)
