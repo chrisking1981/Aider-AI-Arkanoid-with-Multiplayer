@@ -12,7 +12,7 @@ from paddle import create_paddle, move_paddle, draw_paddle
 from ball import create_ball, move_ball, draw_ball
 from brick import create_bricks, draw_brick
 from colors import BLACK, WHITE, BLUE, RED, GREEN
-from powerups import handle_powerups, update_powerups, handle_shield, update_shield, handle_enlarge, update_enlarge, shoot_laser, update_lasers, SHIELD_WIDTH, SHIELD_HEIGHT, LASER_COOLDOWN
+from powerups import handle_powerups, update_powerups, handle_shield, update_shield, handle_enlarge, update_enlarge, shoot_laser, update_lasers, SHIELD_WIDTH, SHIELD_HEIGHT, LASER_COOLDOWN, LASER_SIZE
 
 # Screen dimensions
 SCREEN_WIDTH = 800
@@ -51,6 +51,7 @@ ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, BAL
 bricks = create_bricks()
 
 
+laser = None
 lasers = []
 laser_active = False
 
@@ -99,7 +100,7 @@ while True:
             ball_dy = -ball_dy
             bricks.remove(brick)
             brick_hit_sound.play()
-            shield, enlarge = handle_powerups(brick, paddle, shield, enlarge, shield_active, enlarge_active, shield_sound, enlarge_sound)
+            shield, enlarge, laser = handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
             break
 
     if ball.bottom >= SCREEN_HEIGHT:
@@ -112,7 +113,7 @@ while True:
 
     lasers = update_lasers(lasers, bricks, brick_hit_sound)
 
-    shield, enlarge, shield_active, enlarge_active, countdown_start_time = update_powerups(shield, enlarge, paddle, shield_active, enlarge_active, shield_sound, enlarge_sound, countdown_start_time, SCREEN_HEIGHT)
+    shield, enlarge, laser, shield_active, enlarge_active, laser_active, countdown_start_time = update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound, countdown_start_time, SCREEN_HEIGHT)
     shield, shield_active, countdown_start_time = update_shield(shield, paddle, shield_active, shield_sound, countdown_start_time, SCREEN_HEIGHT)
     enlarge, enlarge_active = update_enlarge(enlarge, paddle, enlarge_active, enlarge_sound, SCREEN_HEIGHT)
 
@@ -147,13 +148,13 @@ while True:
         pygame.draw.rect(SCREEN, GREEN, shield)
         text = font.render("S", True, WHITE)
         SCREEN.blit(text, (shield.x + 5, shield.y + 5))
-        
+
     if enlarge:
         pygame.draw.rect(SCREEN, BLUE, enlarge)
         text = font.render("E", True, WHITE)
         SCREEN.blit(text, (enlarge.x + 5, enlarge.y + 5))
-        
-    for laser in lasers:
+
+    if laser:
         pygame.draw.rect(SCREEN, RED, laser)
         text = font.render("L", True, WHITE)
         SCREEN.blit(text, (laser.x + 5, laser.y + 5))
