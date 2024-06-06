@@ -15,8 +15,6 @@ def move_ball(ball, dx, dy, screen_width, screen_height):
     if ball.top <= 0:
         dy = -dy
 
-    if ball.bottom >= screen_height:
-        dy = -dy
 
     return dx, dy
 
