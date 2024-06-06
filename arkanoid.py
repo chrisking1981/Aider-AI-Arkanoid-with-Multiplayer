@@ -49,6 +49,7 @@ clock = pygame.time.Clock()
 paddle = create_paddle(SCREEN_WIDTH, SCREEN_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT)
 ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, BALL_SPEED, paddle)
 ball_stuck = True
+ball_stuck = True
 bricks = create_bricks()
 
 
@@ -82,18 +83,18 @@ while True:
         move_paddle(paddle, -PADDLE_SPEED, SCREEN_WIDTH, PADDLE_WIDTH)
     if keys[pygame.K_RIGHT]:
         move_paddle(paddle, PADDLE_SPEED, SCREEN_WIDTH, PADDLE_WIDTH)
-    if ball_stuck and keys[pygame.K_SPACE]:
-        ball_stuck = False
-    if laser_active and keys[pygame.K_SPACE]:
-        last_shot_time = shoot_laser(paddle, lasers, last_shot_time, LASER_COOLDOWN, laser_sound)
-
     if ball_stuck:
         ball.x = paddle.x + paddle.width // 2 - BALL_SIZE // 2
         ball.y = paddle.y - BALL_SIZE
-    else:
+        if keys[pygame.K_SPACE]:
+            ball_stuck = False
+    if laser_active and keys[pygame.K_SPACE]:
+        last_shot_time = shoot_laser(paddle, lasers, last_shot_time, LASER_COOLDOWN, laser_sound)
+
+    if not ball_stuck:
         ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH, SCREEN_HEIGHT)
 
-    if ball.colliderect(paddle):
+    if not ball_stuck and ball.colliderect(paddle):
         ball.bottom = paddle.top  # Adjust ball position to be on top of the paddle
         ball_dy = -ball_dy
         paddle_hit_sound.play()
@@ -110,7 +111,7 @@ while True:
             shield, enlarge, laser = handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
             break
 
-    if ball.bottom >= SCREEN_HEIGHT:
+    if not ball_stuck and ball.bottom >= SCREEN_HEIGHT:
         game_over_sound.play()
         pygame.time.wait(2000)  # Wait for 2 seconds to let the sound play
         show_start_screen(SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT)
