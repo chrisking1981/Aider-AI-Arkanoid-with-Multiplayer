@@ -71,6 +71,7 @@ shield_active = False
 shield_activation_time = 0
 enlarge = None
 enlarge_active = False
+laser = None
 
 while True:
     for event in pygame.event.get():
