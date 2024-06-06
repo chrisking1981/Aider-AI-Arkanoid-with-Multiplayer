@@ -158,7 +158,7 @@ while True:
         paddle.width = PADDLE_WIDTH  # Default paddle width
 
     SCREEN.fill(BLACK)
-    paddle_color = RED if enlarge_active else WHITE
+    paddle_color = BLUE if enlarge_active else WHITE
     draw_paddle(SCREEN, paddle, paddle_color, scale_x, scale_y)
     draw_ball(SCREEN, ball, WHITE, scale_x, scale_y)
     for brick in bricks:
