@@ -15,7 +15,7 @@ def handle_powerups(bricks, paddle, shield, enlarge, shield_active, enlarge_acti
             enlarge = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
     return shield, enlarge
 
-def update_powerups(shield, enlarge, paddle, shield_active, enlarge_active, shield_sound, enlarge_sound, countdown_start_time):
+def update_powerups(shield, enlarge, paddle, shield_active, enlarge_active, shield_sound, enlarge_sound, countdown_start_time, SCREEN_HEIGHT):
     if shield:
         shield.y += 5
         if shield.colliderect(paddle):
