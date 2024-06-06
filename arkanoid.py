@@ -7,6 +7,7 @@ import numpy as np
 pygame.init()
 
 from sound import paddle_hit_sound, brick_hit_sound, game_over_sound
+from start_screen import show_start_screen
 
 # Screen dimensions
 SCREEN_WIDTH = 800
