@@ -160,6 +160,7 @@ while True:
                 sys.exit()
 
     keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
         move_paddle(paddle, -PADDLE_SPEED)
     if keys[pygame.K_RIGHT]:
         move_paddle(paddle, PADDLE_SPEED)
