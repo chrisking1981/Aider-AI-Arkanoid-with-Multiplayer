@@ -82,6 +82,7 @@ def shoot_laser(paddle, lasers, last_shot_time, cooldown, laser_sound):
     current_time = pygame.time.get_ticks()
     if current_time - last_shot_time >= cooldown:
         laser = pygame.Rect(paddle.x + paddle.width // 2 - 2, paddle.y - 20, 4, 20)
+        pygame.draw.rect(pygame.display.get_surface(), (255, 0, 0), laser)  # Draw the laser in red
         lasers.append(laser)
         laser_sound.play()
         return current_time
