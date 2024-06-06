@@ -12,7 +12,7 @@ from paddle import create_paddle, move_paddle, draw_paddle
 from ball import create_ball, move_ball, draw_ball
 from brick import create_bricks, draw_brick
 from colors import BLACK, WHITE, BLUE, RED
-from powerups import handle_powerups, update_powerups, SHIELD_WIDTH, SHIELD_HEIGHT, SHIELD_DROP_CHANCE, ENLARGE_DROP_CHANCE
+from powerups import handle_powerups, update_powerups, SHIELD_WIDTH, SHIELD_HEIGHT, SHIELD_DROP_CHANCE, ENLARGE_DROP_CHANCE, LASER_DROP_CHANCE
 
 # Screen dimensions
 SCREEN_WIDTH = 800
@@ -57,10 +57,9 @@ def shoot_laser(paddle, lasers, last_shot_time, cooldown):
         laser_sound.play()
         return current_time
     return last_shot_time
-    laser = pygame.Rect(paddle.x + paddle.width // 2 - 2, paddle.y - 20, 4, 20)
-    lasers.append(laser)
 
 lasers = []
+laser_active = False
 
 lasers = []
 last_shot_time = 0
@@ -88,7 +87,7 @@ while True:
         move_paddle(paddle, -PADDLE_SPEED, SCREEN_WIDTH, PADDLE_WIDTH)
     if keys[pygame.K_RIGHT]:
         move_paddle(paddle, PADDLE_SPEED, SCREEN_WIDTH, PADDLE_WIDTH)
-    elif keys[pygame.K_SPACE]:
+    if laser_active and keys[pygame.K_SPACE]:
         last_shot_time = shoot_laser(paddle, lasers, last_shot_time, cooldown)
 
     ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -107,7 +106,7 @@ while True:
             ball_dy = -ball_dy
             bricks.remove(brick)
             brick_hit_sound.play()
-            shield, enlarge = handle_powerups(bricks, paddle, shield, enlarge, shield_active, enlarge_active, shield_sound, enlarge_sound)
+            shield, enlarge, laser = handle_powerups(bricks, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
 
     if ball.colliderect(paddle) or (shield_active and ball.colliderect(pygame.Rect(0, SCREEN_HEIGHT - SHIELD_HEIGHT, SCREEN_WIDTH, SHIELD_HEIGHT))):
         ball_dy = -ball_dy
@@ -131,18 +130,20 @@ while True:
                     bricks.remove(brick)
                     lasers.remove(laser)
                     brick_hit_sound.play()
-                    if random.random() < SHIELD_DROP_CHANCE:
-                        shield = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
-                    elif random.random() < ENLARGE_DROP_CHANCE:
-                        enlarge = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
+                    shield, enlarge, laser = handle_powerups(bricks, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
                     break
 
-    shield, enlarge, shield_active, enlarge_active, countdown_start_time = update_powerups(shield, enlarge, paddle, shield_active, enlarge_active, shield_sound, enlarge_sound, countdown_start_time, SCREEN_HEIGHT)
+    shield, enlarge, laser, shield_active, enlarge_active, laser_active, countdown_start_time = update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound, countdown_start_time, SCREEN_HEIGHT)
 
     if shield_active and pygame.time.get_ticks() - shield_activation_time > 30000:  # 30 seconds
         shield_active = False
 
     # Update countdown timer
+    if laser:
+        pygame.draw.rect(SCREEN, RED, laser)
+        text = font.render("Laser", True, WHITE)
+        SCREEN.blit(text, (laser.x, laser.y - 20))
+
     if shield_active:
         elapsed_time = pygame.time.get_ticks() - countdown_start_time
         remaining_time = max(0, COUNTDOWN_TIME - elapsed_time)
@@ -168,7 +169,7 @@ while True:
         SCREEN.blit(text, (shield.x, shield.y - 20))
         
     if enlarge:
-        pygame.draw.rect(SCREEN, RED, enlarge)
+        pygame.draw.rect(SCREEN, BLUE, enlarge)
         text = font.render("Enlarge", True, WHITE)
         SCREEN.blit(text, (enlarge.x, enlarge.y - 20))
         
