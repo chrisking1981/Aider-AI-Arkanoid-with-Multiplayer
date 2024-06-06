@@ -103,7 +103,7 @@ def show_start_screen():
     font = pygame.font.Font(None, 36)
     text = font.render("Press SPACE to start", True, WHITE)
     SCREEN.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2 + 50))
-    text = font.render("Press R to restart or Q to quit during the game", True, WHITE)
+    text = font.render("Press Q to quit during the game", True, WHITE)
     SCREEN.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2 + 100))
     pygame.display.flip()
 
@@ -115,6 +115,10 @@ def show_start_screen():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
+                    waiting = False
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    sys.exit()
                     waiting = False
 
 show_start_screen()
