@@ -91,6 +91,8 @@ while True:
             ball_dx, ball_dy = 0, 0  # Ensure no initial velocity
     else:
         ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH, SCREEN_HEIGHT)
+    else:
+        ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH, SCREEN_HEIGHT)
     if laser_active and keys[pygame.K_s]:
         last_shot_time = shoot_laser(paddle, lasers, last_shot_time, LASER_COOLDOWN, laser_sound)
 
