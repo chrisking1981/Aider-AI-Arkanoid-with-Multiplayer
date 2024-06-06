@@ -98,9 +98,11 @@ while True:
     ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH, SCREEN_HEIGHT)
 
     if ball.colliderect(paddle):
+        ball.bottom = paddle.top  # Adjust ball position to be on top of the paddle
         ball_dy = -ball_dy
         paddle_hit_sound.play()
     elif shield_active and ball.colliderect(pygame.Rect(0, SCREEN_HEIGHT - SHIELD_HEIGHT, SCREEN_WIDTH, SHIELD_HEIGHT)):
+        ball.bottom = SCREEN_HEIGHT - SHIELD_HEIGHT  # Adjust ball position to be on top of the shield
         ball_dy = -ball_dy
         paddle_hit_sound.play()
 
