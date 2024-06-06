@@ -44,11 +44,22 @@ paddle = create_paddle(SCREEN_WIDTH, SCREEN_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT)
 ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, BALL_SPEED)
 bricks = create_bricks()
 
-def shoot_laser(paddle, lasers):
+def shoot_laser(paddle, lasers, last_shot_time, cooldown):
+    current_time = pygame.time.get_ticks()
+    if current_time - last_shot_time >= cooldown:
+        laser = pygame.Rect(paddle.x + paddle.width // 2 - 2, paddle.y - 10, 4, 10)
+        lasers.append(laser)
+        laser_sound.play()
+        return current_time
+    return last_shot_time
     laser = pygame.Rect(paddle.x + paddle.width // 2 - 2, paddle.y - 10, 4, 10)
     lasers.append(laser)
 
 lasers = []
+
+lasers = []
+last_shot_time = 0
+cooldown = 500  # Cooldown period in milliseconds
 
 while True:
     for event in pygame.event.get():
@@ -67,8 +78,7 @@ while True:
     if keys[pygame.K_RIGHT]:
         move_paddle(paddle, PADDLE_SPEED, SCREEN_WIDTH, PADDLE_WIDTH)
     elif keys[pygame.K_SPACE]:
-        shoot_laser(paddle, lasers)
-        laser_sound.play()
+        last_shot_time = shoot_laser(paddle, lasers, last_shot_time, cooldown)
 
     ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH)
 
