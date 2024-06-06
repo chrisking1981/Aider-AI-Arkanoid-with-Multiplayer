@@ -8,16 +8,15 @@ SHIELD_DROP_CHANCE = 0.3
 ENLARGE_DROP_CHANCE = 0.2
 LASER_DROP_CHANCE = 0.1
 
-def handle_powerups(bricks, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound):
-    for brick in bricks[:]:
-        if not (shield or enlarge or laser):
-            drop_chance = random.random()
-            if drop_chance < SHIELD_DROP_CHANCE:
-                shield = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
-            elif drop_chance < SHIELD_DROP_CHANCE + ENLARGE_DROP_CHANCE:
-                enlarge = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
-            elif drop_chance < SHIELD_DROP_CHANCE + ENLARGE_DROP_CHANCE + LASER_DROP_CHANCE:
-                laser = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
+def handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound):
+    if not (shield or enlarge or laser):
+        drop_chance = random.random()
+        if drop_chance < SHIELD_DROP_CHANCE:
+            shield = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
+        elif drop_chance < SHIELD_DROP_CHANCE + ENLARGE_DROP_CHANCE:
+            enlarge = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
+        elif drop_chance < SHIELD_DROP_CHANCE + ENLARGE_DROP_CHANCE + LASER_DROP_CHANCE:
+            laser = pygame.Rect(brick.x + brick.width // 2 - SHIELD_WIDTH // 2, brick.y, SHIELD_WIDTH, SHIELD_HEIGHT)
     return shield, enlarge, laser
 
 def update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound, countdown_start_time, SCREEN_HEIGHT):
