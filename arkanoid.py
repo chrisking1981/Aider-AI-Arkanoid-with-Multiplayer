@@ -48,50 +48,50 @@ BRICK_HEIGHT = 20
 BRICK_ROWS = 5
 BRICK_COLUMNS = 10
 
-class Paddle:
-    def __init__(self):
-        self.rect = pygame.Rect((SCREEN_WIDTH // 2) - (PADDLE_WIDTH // 2), SCREEN_HEIGHT - 30, PADDLE_WIDTH, PADDLE_HEIGHT)
+def create_paddle():
+    return pygame.Rect((SCREEN_WIDTH // 2) - (PADDLE_WIDTH // 2), SCREEN_HEIGHT - 30, PADDLE_WIDTH, PADDLE_HEIGHT)
 
-    def move(self, dx):
-        self.rect.x += dx
-        if self.rect.x < 0:
-            self.rect.x = 0
-        if self.rect.x > SCREEN_WIDTH - PADDLE_WIDTH:
-            self.rect.x = SCREEN_WIDTH - PADDLE_WIDTH
+def move_paddle(paddle, dx):
+    paddle.x += dx
+    if paddle.x < 0:
+        paddle.x = 0
+    if paddle.x > SCREEN_WIDTH - PADDLE_WIDTH:
+        paddle.x = SCREEN_WIDTH - PADDLE_WIDTH
 
-    def draw(self):
-        pygame.draw.rect(SCREEN, WHITE, self.rect)
+def draw_paddle(paddle):
+    pygame.draw.rect(SCREEN, WHITE, paddle)
 
-class Ball:
-    def __init__(self):
-        self.rect = pygame.Rect(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, BALL_SIZE, BALL_SIZE)
-        self.dx = BALL_SPEED * random.choice((1, -1))
-        self.dy = BALL_SPEED * random.choice((1, -1))
+def create_ball():
+    rect = pygame.Rect(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, BALL_SIZE, BALL_SIZE)
+    dx = BALL_SPEED * random.choice((1, -1))
+    dy = BALL_SPEED * random.choice((1, -1))
+    return rect, dx, dy
 
-    def move(self):
-        self.rect.x += self.dx
-        self.rect.y += self.dy
+def move_ball(ball, dx, dy):
+    ball.x += dx
+    ball.y += dy
 
-        if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
-            self.dx = -self.dx
-        if self.rect.top <= 0:
-            self.dy = -self.dy
+    if ball.left <= 0 or ball.right >= SCREEN_WIDTH:
+        dx = -dx
+    if ball.top <= 0:
+        dy = -dy
 
-    def draw(self):
-        pygame.draw.ellipse(SCREEN, WHITE, self.rect)
+    return dx, dy
 
-class Brick:
-    def __init__(self, x, y):
-        self.rect = pygame.Rect(x, y, BRICK_WIDTH, BRICK_HEIGHT)
+def draw_ball(ball):
+    pygame.draw.ellipse(SCREEN, WHITE, ball)
 
-    def draw(self):
-        pygame.draw.rect(SCREEN, BLUE, self.rect)
+def create_brick(x, y):
+    return pygame.Rect(x, y, BRICK_WIDTH, BRICK_HEIGHT)
+
+def draw_brick(brick):
+    pygame.draw.rect(SCREEN, BLUE, brick)
 
 def create_bricks():
     bricks = []
     for row in range(BRICK_ROWS):
         for col in range(BRICK_COLUMNS):
-            brick = Brick(col * (BRICK_WIDTH + 10) + 35, row * (BRICK_HEIGHT + 10) + 35)
+            brick = create_brick(col * (BRICK_WIDTH + 10) + 35, row * (BRICK_HEIGHT + 10) + 35)
             bricks.append(brick)
     return bricks
 
@@ -117,8 +117,8 @@ def show_start_screen():
                 if event.key == pygame.K_SPACE:
                     waiting = False
     clock = pygame.time.Clock()
-    paddle = Paddle()
-    ball = Ball()
+    paddle = create_paddle()
+    ball, ball_dx, ball_dy = create_ball()
     bricks = create_bricks()
 
     while True:
@@ -129,33 +129,33 @@ def show_start_screen():
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            paddle.move(-PADDLE_SPEED)
+            move_paddle(paddle, -PADDLE_SPEED)
         if keys[pygame.K_RIGHT]:
-            paddle.move(PADDLE_SPEED)
+            move_paddle(paddle, PADDLE_SPEED)
 
-        ball.move()
+        ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy)
 
-        if ball.rect.colliderect(paddle.rect):
-            ball.dy = -ball.dy
+        if ball.colliderect(paddle):
+            ball_dy = -ball_dy
             paddle_hit_sound.play()
 
         for brick in bricks[:]:
-            if ball.rect.colliderect(brick.rect):
-                ball.dy = -ball.dy
+            if ball.colliderect(brick):
+                ball_dy = -ball_dy
                 bricks.remove(brick)
                 brick_hit_sound.play()
 
-        if ball.rect.bottom >= SCREEN_HEIGHT:
+        if ball.bottom >= SCREEN_HEIGHT:
             game_over_sound.play()
             pygame.time.wait(2000)  # Wait for 2 seconds to let the sound play
             pygame.quit()
             sys.exit()
 
         SCREEN.fill(BLACK)
-        paddle.draw()
-        ball.draw()
+        draw_paddle(paddle)
+        draw_ball(ball)
         for brick in bricks:
-            brick.draw()
+            draw_brick(brick)
         pygame.display.flip()
         clock.tick(60)
 
