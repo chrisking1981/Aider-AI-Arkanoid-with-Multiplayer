@@ -1,4 +1,5 @@
 import pygame
+from arkanoid import SCREEN, BLUE
 
 BRICK_WIDTH = 75
 BRICK_HEIGHT = 20
