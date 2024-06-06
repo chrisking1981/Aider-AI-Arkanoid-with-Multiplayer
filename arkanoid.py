@@ -171,7 +171,7 @@ while True:
             enlarge_active = True
             enlarge_sound.play()
             enlarge = None
-        elif enlarge and enlarge.y > SCREEN_HEIGHT:
+        elif enlarge.y > SCREEN_HEIGHT:
             enlarge = None
 
     if enlarge_active:
