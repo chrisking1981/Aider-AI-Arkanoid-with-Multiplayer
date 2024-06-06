@@ -5,18 +5,15 @@ import random
 SHIELD_WIDTH = 20
 SHIELD_HEIGHT = 20
 SHIELD_SIZE = 20
-SHIELD_DROP_CHANCE = 0.3
-ENLARGE_DROP_CHANCE = 0.2
-LASER_DROP_CHANCE = 0.1
-
 def handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound):
     if not (shield or enlarge or laser):
-        drop_chance = random.random()
-        if drop_chance < SHIELD_DROP_CHANCE:
+        powerups = ['shield', 'enlarge', 'laser']
+        selected_powerup = random.choice(powerups)
+        if selected_powerup == 'shield':
             shield = pygame.Rect(brick.x + brick.width // 2 - SHIELD_SIZE // 2, brick.y, SHIELD_SIZE, SHIELD_SIZE)
-        elif drop_chance < SHIELD_DROP_CHANCE + ENLARGE_DROP_CHANCE:
+        elif selected_powerup == 'enlarge':
             enlarge = pygame.Rect(brick.x + brick.width // 2 - SHIELD_SIZE // 2, brick.y, SHIELD_SIZE, SHIELD_SIZE)
-        elif drop_chance < SHIELD_DROP_CHANCE + ENLARGE_DROP_CHANCE + LASER_DROP_CHANCE:
+        elif selected_powerup == 'laser':
             laser = pygame.Rect(brick.x + brick.width // 2 - SHIELD_SIZE // 2, brick.y, SHIELD_SIZE, SHIELD_SIZE)
     return shield, enlarge, laser
 

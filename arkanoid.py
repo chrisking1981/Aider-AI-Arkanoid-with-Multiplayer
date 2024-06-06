@@ -12,7 +12,7 @@ from paddle import create_paddle, move_paddle, draw_paddle
 from ball import create_ball, move_ball, draw_ball
 from brick import create_bricks, draw_brick
 from colors import BLACK, WHITE, BLUE, RED, GREEN
-from powerups import handle_powerups, update_powerups, handle_shield, update_shield, handle_enlarge, update_enlarge, shoot_laser, update_lasers, SHIELD_WIDTH, SHIELD_HEIGHT, SHIELD_DROP_CHANCE, ENLARGE_DROP_CHANCE, LASER_DROP_CHANCE, LASER_COOLDOWN
+from powerups import handle_powerups, update_powerups, handle_shield, update_shield, handle_enlarge, update_enlarge, shoot_laser, update_lasers, SHIELD_WIDTH, SHIELD_HEIGHT, LASER_COOLDOWN
 
 # Screen dimensions
 SCREEN_WIDTH = 800
