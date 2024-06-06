@@ -47,19 +47,19 @@ bricks = create_bricks()
 def shoot_laser(paddle, lasers, last_shot_time, cooldown):
     current_time = pygame.time.get_ticks()
     if current_time - last_shot_time >= cooldown:
-        laser = pygame.Rect(paddle.x + paddle.width // 2 - 2, paddle.y - 10, 4, 10)
+        laser = pygame.Rect(paddle.x + paddle.width // 2 - 2, paddle.y - 20, 4, 20)
         lasers.append(laser)
         laser_sound.play()
         return current_time
     return last_shot_time
-    laser = pygame.Rect(paddle.x + paddle.width // 2 - 2, paddle.y - 10, 4, 10)
+    laser = pygame.Rect(paddle.x + paddle.width // 2 - 2, paddle.y - 20, 4, 20)
     lasers.append(laser)
 
 lasers = []
 
 lasers = []
 last_shot_time = 0
-cooldown = 500  # Cooldown period in milliseconds
+cooldown = 250  # Cooldown period in milliseconds
 
 while True:
     for event in pygame.event.get():
