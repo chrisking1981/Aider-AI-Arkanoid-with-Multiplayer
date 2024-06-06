@@ -8,6 +8,7 @@ SHIELD_SIZE = 20
 SHIELD_DROP_CHANCE = 0.3
 ENLARGE_DROP_CHANCE = 0.2
 LASER_DROP_CHANCE = 0.1
+LASER_DROP_CHANCE = 0.1
 
 def handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound):
     if not (shield or enlarge or laser):
