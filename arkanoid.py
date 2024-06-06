@@ -11,7 +11,7 @@ from start_screen import show_start_screen
 from paddle import create_paddle, move_paddle, draw_paddle
 from ball import create_ball, move_ball, draw_ball
 from brick import create_bricks, draw_brick
-from colors import BLACK, WHITE, BLUE, RED
+from colors import BLACK, WHITE, BLUE, RED, GREEN
 from powerups import handle_powerups, update_powerups, SHIELD_WIDTH, SHIELD_HEIGHT, SHIELD_DROP_CHANCE, ENLARGE_DROP_CHANCE, LASER_DROP_CHANCE
 
 # Screen dimensions
