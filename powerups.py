@@ -99,3 +99,23 @@ def update_lasers(lasers, bricks, brick_hit_sound):
                     brick_hit_sound.play()
                     break
     return lasers
+# Enlarge constants
+ENLARGE_DROP_CHANCE = 0.2
+
+def handle_enlarge(brick, enlarge):
+    if not enlarge:
+        drop_chance = random.random()
+        if drop_chance < ENLARGE_DROP_CHANCE:
+            enlarge = pygame.Rect(brick.x + brick.width // 2 - SHIELD_SIZE // 2, brick.y, SHIELD_SIZE, SHIELD_SIZE)
+    return enlarge
+
+def update_enlarge(enlarge, paddle, enlarge_active, enlarge_sound, SCREEN_HEIGHT):
+    if enlarge:
+        enlarge.y += 5
+        if enlarge.colliderect(paddle):
+            enlarge_active = True
+            enlarge_sound.play()
+            enlarge = None
+        elif enlarge.y > SCREEN_HEIGHT:
+            enlarge = None
+    return enlarge, enlarge_active
