@@ -99,7 +99,7 @@ while True:
             ball_dy = -ball_dy
             bricks.remove(brick)
             brick_hit_sound.play()
-            shield, enlarge, laser = handle_powerups(brick, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
+            shield, enlarge = handle_powerups(brick, paddle, shield, enlarge, shield_active, enlarge_active, shield_sound, enlarge_sound)
             break
 
     if ball.bottom >= SCREEN_HEIGHT:
