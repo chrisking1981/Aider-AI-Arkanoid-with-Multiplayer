@@ -74,3 +74,28 @@ def update_shield(shield, paddle, shield_active, shield_sound, countdown_start_t
         elif shield.y > SCREEN_HEIGHT:
             shield = None
     return shield, shield_active, countdown_start_time
+# Laser constants
+LASER_COOLDOWN = 125  # Cooldown period in milliseconds
+
+def shoot_laser(paddle, lasers, last_shot_time, cooldown, laser_sound):
+    current_time = pygame.time.get_ticks()
+    if current_time - last_shot_time >= cooldown:
+        laser = pygame.Rect(paddle.x + paddle.width // 2 - 2, paddle.y - 20, 4, 20)
+        lasers.append(laser)
+        laser_sound.play()
+        return current_time
+    return last_shot_time
+
+def update_lasers(lasers, bricks, brick_hit_sound):
+    for laser in lasers[:]:
+        laser.y -= 15
+        if laser.y < 0:
+            lasers.remove(laser)
+        else:
+            for brick in bricks[:]:
+                if laser.colliderect(brick):
+                    bricks.remove(brick)
+                    lasers.remove(laser)
+                    brick_hit_sound.play()
+                    break
+    return lasers

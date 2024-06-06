@@ -12,7 +12,7 @@ from paddle import create_paddle, move_paddle, draw_paddle
 from ball import create_ball, move_ball, draw_ball
 from brick import create_bricks, draw_brick
 from colors import BLACK, WHITE, BLUE, RED, GREEN
-from powerups import handle_powerups, update_powerups, handle_shield, update_shield, SHIELD_WIDTH, SHIELD_HEIGHT, SHIELD_DROP_CHANCE, ENLARGE_DROP_CHANCE, LASER_DROP_CHANCE
+from powerups import handle_powerups, update_powerups, handle_shield, update_shield, shoot_laser, update_lasers, SHIELD_WIDTH, SHIELD_HEIGHT, SHIELD_DROP_CHANCE, ENLARGE_DROP_CHANCE, LASER_DROP_CHANCE, LASER_COOLDOWN
 
 # Screen dimensions
 SCREEN_WIDTH = 800
@@ -50,21 +50,12 @@ paddle = create_paddle(SCREEN_WIDTH, SCREEN_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT)
 ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, BALL_SPEED)
 bricks = create_bricks()
 
-def shoot_laser(paddle, lasers, last_shot_time, cooldown):
-    current_time = pygame.time.get_ticks()
-    if current_time - last_shot_time >= cooldown:
-        laser = pygame.Rect(paddle.x + paddle.width // 2 - 2, paddle.y - 20, 4, 20)
-        lasers.append(laser)
-        laser_sound.play()
-        return current_time
-    return last_shot_time
 
 lasers = []
 laser_active = False
 
 lasers = []
 last_shot_time = 0
-cooldown = 125  # Cooldown period in milliseconds
 
 shield = None
 shield_active = False
@@ -90,7 +81,7 @@ while True:
     if keys[pygame.K_RIGHT]:
         move_paddle(paddle, PADDLE_SPEED, SCREEN_WIDTH, PADDLE_WIDTH)
     if laser_active and keys[pygame.K_SPACE]:
-        last_shot_time = shoot_laser(paddle, lasers, last_shot_time, cooldown)
+        last_shot_time = shoot_laser(paddle, lasers, last_shot_time, LASER_COOLDOWN, laser_sound)
 
     ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH, SCREEN_HEIGHT)
 
@@ -123,18 +114,7 @@ while True:
         ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, BALL_SPEED)
         bricks = create_bricks()
 
-    for laser in lasers[:]:
-        laser.y -= 15
-        if laser.y < 0:
-            lasers.remove(laser)
-        else:
-            for brick in bricks[:]:
-                if laser.colliderect(brick):
-                    bricks.remove(brick)
-                    lasers.remove(laser)
-                    brick_hit_sound.play()
-                    shield, enlarge, laser = handle_powerups(bricks, paddle, shield, enlarge, laser, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound)
-                    break
+    lasers = update_lasers(lasers, bricks, brick_hit_sound)
 
     shield, enlarge, laser, shield_active, enlarge_active, laser_active, countdown_start_time = update_powerups(shield, enlarge, laser, paddle, shield_active, enlarge_active, laser_active, shield_sound, enlarge_sound, laser_sound, countdown_start_time, SCREEN_HEIGHT)
     shield, shield_active, countdown_start_time = update_shield(shield, paddle, shield_active, shield_sound, countdown_start_time, SCREEN_HEIGHT)
