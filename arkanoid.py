@@ -65,8 +65,9 @@ def move_paddle(paddle, dx):
     if paddle.x > SCREEN_WIDTH - PADDLE_WIDTH:
         paddle.x = SCREEN_WIDTH - PADDLE_WIDTH
 
-def draw_paddle(paddle):
-    pygame.draw.rect(SCREEN, WHITE, paddle)
+def draw_paddle(paddle, scale_x, scale_y):
+    scaled_paddle = pygame.Rect(paddle.x * scale_x, paddle.y * scale_y, paddle.width * scale_x, paddle.height * scale_y)
+    pygame.draw.rect(SCREEN, WHITE, scaled_paddle)
 
 def create_ball():
     rect = pygame.Rect(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, BALL_SIZE, BALL_SIZE)
@@ -85,14 +86,16 @@ def move_ball(ball, dx, dy):
 
     return dx, dy
 
-def draw_ball(ball):
-    pygame.draw.ellipse(SCREEN, WHITE, ball)
+def draw_ball(ball, scale_x, scale_y):
+    scaled_ball = pygame.Rect(ball.x * scale_x, ball.y * scale_y, ball.width * scale_x, ball.height * scale_y)
+    pygame.draw.ellipse(SCREEN, WHITE, scaled_ball)
 
 def create_brick(x, y):
     return pygame.Rect(x, y, BRICK_WIDTH, BRICK_HEIGHT)
 
-def draw_brick(brick):
-    pygame.draw.rect(SCREEN, BLUE, brick)
+def draw_brick(brick, scale_x, scale_y):
+    scaled_brick = pygame.Rect(brick.x * scale_x, brick.y * scale_y, brick.width * scale_x, brick.height * scale_y)
+    pygame.draw.rect(SCREEN, BLUE, scaled_brick)
 
 def create_bricks():
     bricks = []
@@ -103,6 +106,9 @@ def create_bricks():
     return bricks
 
 def show_start_screen():
+    scale_x = SCREEN_WIDTH / 800
+    scale_y = SCREEN_HEIGHT / 600
+
     SCREEN.fill(BLACK)
     font = pygame.font.Font(None, 74)
     text = font.render("Arkanoid", True, WHITE)
@@ -193,9 +199,9 @@ while True:
         bricks = create_bricks()
 
     SCREEN.fill(BLACK)
-    draw_paddle(paddle)
-    draw_ball(ball)
+    draw_paddle(paddle, scale_x, scale_y)
+    draw_ball(ball, scale_x, scale_y)
     for brick in bricks:
-        draw_brick(brick)
+        draw_brick(brick, scale_x, scale_y)
     pygame.display.flip()
     clock.tick(60)
