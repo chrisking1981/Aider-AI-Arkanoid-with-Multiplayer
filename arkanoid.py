@@ -88,6 +88,7 @@ while True:
         ball.y = paddle.y - BALL_SIZE
         if keys[pygame.K_s]:
             ball_stuck = False
+            ball_dx, ball_dy = 0, 0  # Ensure no initial velocity
     if laser_active and keys[pygame.K_s]:
         last_shot_time = shoot_laser(paddle, lasers, last_shot_time, LASER_COOLDOWN, laser_sound)
 
