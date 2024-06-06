@@ -59,7 +59,7 @@ lasers = []
 
 lasers = []
 last_shot_time = 0
-cooldown = 250  # Cooldown period in milliseconds
+cooldown = 125  # Cooldown period in milliseconds
 
 while True:
     for event in pygame.event.get():
