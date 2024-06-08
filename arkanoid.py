@@ -63,7 +63,6 @@ class Game:
          self.ball_stuck = True
          self.shield_active = False
          self.enlarge_active = False
-         self.laser_active = False
          self.sticky_active = False
          self.last_shot_time = 0
 
