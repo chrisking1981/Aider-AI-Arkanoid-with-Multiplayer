@@ -43,6 +43,13 @@ class Game:
          self.bricks = Brick.create_bricks()
          self.powerup_manager = PowerUpManager()
          self.ball_stuck = True
+         self.paddle_hit_sound = paddle_hit_sound
+         self.brick_hit_sound = brick_hit_sound
+         self.game_over_sound = game_over_sound
+         self.laser_sound = laser_sound
+         self.shield_sound = shield_sound
+         self.enlarge_sound = enlarge_sound
+         self.sticky_sound = sticky_sound
          self.countdown_start_time = 0
          self.shield_active = False
          self.enlarge_active = False
