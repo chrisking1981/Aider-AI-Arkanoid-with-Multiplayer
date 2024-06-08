@@ -166,7 +166,13 @@ class Game:
      def draw_lasers(self):
          for laser in self.lasers:
              laser.draw(self.screen)
+     def run(self):
          show_start_screen(self.screen, SCREEN_WIDTH, SCREEN_HEIGHT)
+         while True:
+             self.handle_events()
+             self.update()
+             self.draw()
+             self.clock.tick(60)
          while True:
              self.handle_events()
              self.update()
