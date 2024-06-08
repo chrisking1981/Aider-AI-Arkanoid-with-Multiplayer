@@ -1,5 +1,5 @@
 import pygame
- import numpy as np
+import numpy as np
 
  class SoundManager:
      def __init__(self):
