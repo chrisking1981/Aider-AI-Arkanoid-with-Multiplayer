@@ -1,198 +1,133 @@
 import pygame
-import sys
-import random
-import numpy as np
+ import sys
+ import random
+ import numpy as np
 
-# Initialize Pygame
-pygame.init()
+ # Initialize Pygame
+ pygame.init()
 
-from sound import paddle_hit_sound, brick_hit_sound, game_over_sound, laser_sound, shield_sound, enlarge_sound, sticky_sound
-from start_screen import show_start_screen
-from paddle import create_paddle, move_paddle, draw_paddle
-from ball import create_ball, move_ball, draw_ball
-from brick import create_bricks, draw_brick
-from colors import BLACK, WHITE, BLUE, RED, GREEN, YELLOW
-from powerups import handle_powerups, update_powerups, handle_shield, update_shield, handle_enlarge, update_enlarge, shoot_laser, update_lasers, SHIELD_WIDTH, SHIELD_HEIGHT, LASER_COOLDOWN, LASER_SIZE, STICKY_SIZE
+ from sound import paddle_hit_sound, brick_hit_sound, game_over_sound, laser_sound, shield_sound, enlarge_sound, sticky_sound
+ from start_screen import show_start_screen
+ from colors import BLACK, WHITE, BLUE, RED, GREEN, YELLOW
+ from screen import maintain_aspect_ratio
+ from paddle import Paddle
+ from ball import Ball
+ from brick import Brick
+ from powerups import PowerUpManager
 
-# Screen dimensions
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT
-SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
-pygame.display.set_caption("Arkanoid")
+ # Screen dimensions
+ SCREEN_WIDTH = 800
+ SCREEN_HEIGHT = 600
+ ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT
+ SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+ pygame.display.set_caption("Arkanoid")
 
-from screen import maintain_aspect_ratio
+ class Game:
+     def __init__(self):
+         self.screen = SCREEN
+         self.clock = pygame.time.Clock()
+         self.font = pygame.font.Font(None, 24)
+         self.paddle = Paddle(SCREEN_WIDTH, SCREEN_HEIGHT)
+         self.ball = Ball(SCREEN_WIDTH, SCREEN_HEIGHT, self.paddle)
+         self.bricks = Brick.create_bricks()
+         self.powerup_manager = PowerUpManager()
+         self.ball_stuck = True
+         self.countdown_start_time = 0
+         self.shield_active = False
+         self.enlarge_active = False
+         self.laser_active = False
+         self.sticky_active = False
+         self.last_shot_time = 0
 
+     def reset(self):
+         self.paddle = Paddle(SCREEN_WIDTH, SCREEN_HEIGHT)
+         self.ball = Ball(SCREEN_WIDTH, SCREEN_HEIGHT, self.paddle)
+         self.bricks = Brick.create_bricks()
+         self.ball_stuck = True
+         self.shield_active = False
+         self.enlarge_active = False
+         self.laser_active = False
+         self.sticky_active = False
+         self.last_shot_time = 0
 
-# Paddle
-PADDLE_WIDTH = 100
-PADDLE_HEIGHT = 10
-PADDLE_SPEED = 15
+     def handle_events(self):
+         for event in pygame.event.get():
+             if event.type == pygame.VIDEORESIZE:
+                 maintain_aspect_ratio(event)
+             if event.type == pygame.QUIT:
+                 pygame.quit()
+                 sys.exit()
 
-# Ball
-BALL_SIZE = 10
-BALL_SPEED = 8
+     def update(self):
+         keys = pygame.key.get_pressed()
+         if keys[pygame.K_LEFT]:
+             self.paddle.move(-self.paddle.speed)
+         if keys[pygame.K_RIGHT]:
+             self.paddle.move(self.paddle.speed)
+         if self.ball_stuck:
+             self.ball.stick_to_paddle(self.paddle)
+             if keys[pygame.K_f]:
+                 self.ball.launch()
+                 self.ball_stuck = False
+         else:
+             self.ball.move()
 
+         if self.ball.collides_with_paddle(self.paddle):
+             self.ball.bounce_off_paddle(self.paddle)
+             paddle_hit_sound.play()
+         elif self.shield_active and self.ball.collides_with_shield(SCREEN_HEIGHT):
+             self.ball.bounce_off_shield(SCREEN_HEIGHT)
+             paddle_hit_sound.play()
 
+         for brick in self.bricks[:]:
+             if self.ball.collides_with_brick(brick):
+                 self.ball.bounce_off_brick()
+                 self.bricks.remove(brick)
+                 brick_hit_sound.play()
+                 self.powerup_manager.handle_powerups(brick, self.paddle, self)
+                 break
 
+         if self.ball.is_out_of_bounds(SCREEN_HEIGHT):
+             game_over_sound.play()
+             pygame.time.wait(2000)
+             show_start_screen(self.screen, SCREEN_WIDTH, SCREEN_HEIGHT)
+             self.reset()
 
+         self.powerup_manager.update(self.paddle, self)
 
+     def draw(self):
+         self.screen.fill(BLACK)
+         self.paddle.draw(self.screen)
+         self.ball.draw(self.screen)
+         for brick in self.bricks:
+             Brick.draw(self.screen, brick)
+         self.powerup_manager.draw(self.screen, self.font)
+         self.draw_shield()
+         self.draw_timer()
+         pygame.display.flip()
 
-# Countdown timer
-COUNTDOWN_TIME = 30000  # 30 seconds in milliseconds
-countdown_start_time = 0
+     def draw_shield(self):
+         if self.shield_active:
+             pygame.draw.rect(self.screen, GREEN, (0, SCREEN_HEIGHT - self.paddle.height, SCREEN_WIDTH, self.paddle.height))
 
-font = pygame.font.Font(None, 24)
-show_start_screen(SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT)
+     def draw_timer(self):
+         remaining_time = self.get_remaining_time()
+         timer_text = f"Shield: {remaining_time // 60000:02}:{(remaining_time % 60000) // 1000:02}" if self.shield_active else "Shield: 00:00"
+         text = self.font.render(timer_text, True, WHITE)
+         self.screen.blit(text, (10, 10))
 
-clock = pygame.time.Clock()
-paddle = create_paddle(SCREEN_WIDTH, SCREEN_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT)
-ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, 0, paddle)
-ball_stuck = True
-bricks = create_bricks()
+     def get_remaining_time(self):
+         elapsed_time = pygame.time.get_ticks() - self.countdown_start_time
+         return max(0, 30000 - elapsed_time)
 
+     def run(self):
+         show_start_screen(self.screen, SCREEN_WIDTH, SCREEN_HEIGHT)
+         while True:
+             self.handle_events()
+             self.update()
+             self.draw()
+             self.clock.tick(60)
 
-sticky = None
-sticky_active = False
-lasers = []
-laser_active = False
-
-lasers = []
-last_shot_time = 0
-
-shield = None
-shield_active = False
-shield_activation_time = 0
-enlarge = None
-enlarge_active = False
-laser = None
-
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.VIDEORESIZE:
-            maintain_aspect_ratio(event)
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
-
-    scale_x = SCREEN_WIDTH / 800
-    scale_y = SCREEN_HEIGHT / 600
-
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
-        move_paddle(paddle, -PADDLE_SPEED, SCREEN_WIDTH, PADDLE_WIDTH)
-    if keys[pygame.K_RIGHT]:
-        move_paddle(paddle, PADDLE_SPEED, SCREEN_WIDTH, PADDLE_WIDTH)
-    if ball_stuck:
-        ball.x = paddle.x + paddle.width // 2 - BALL_SIZE // 2
-        ball.y = paddle.y - BALL_SIZE
-        if keys[pygame.K_f]:
-            if not sticky_active:
-                ball_dx, ball_dy = BALL_SPEED * random.choice((1, -1)), -BALL_SPEED  # Launch the ball
-            ball_stuck = False
-            ball_dx, ball_dy = BALL_SPEED * random.choice((1, -1)), -BALL_SPEED  # Launch the ball
-    else:
-        ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH, SCREEN_HEIGHT)
-
-    if not ball_stuck:
-        ball_dx, ball_dy = move_ball(ball, ball_dx, ball_dy, SCREEN_WIDTH, SCREEN_HEIGHT)
-
-    if not ball_stuck and ball.colliderect(paddle) and not sticky_active:
-        ball.bottom = paddle.top  # Adjust ball position to be on top of the paddle
-        ball_dy = -ball_dy
-        paddle_hit_sound.play()
-    elif shield_active and ball.colliderect(pygame.Rect(0, SCREEN_HEIGHT - SHIELD_HEIGHT, SCREEN_WIDTH, SHIELD_HEIGHT)):
-        ball.bottom = SCREEN_HEIGHT - SHIELD_HEIGHT  # Adjust ball position to be on top of the shield
-        ball_dy = -ball_dy
-        paddle_hit_sound.play()
-
-    for brick in bricks[:]:
-        if ball.colliderect(brick):
-            ball_dy = -ball_dy
-            bricks.remove(brick)
-            brick_hit_sound.play()
-            shield, enlarge, laser, sticky = handle_powerups(brick, paddle, shield, enlarge, laser, sticky, shield_active, enlarge_active, laser_active, sticky_active, shield_sound, enlarge_sound, laser_sound, sticky_sound)
-            break
-        elif sticky_active and ball.colliderect(paddle):
-            ball_stuck = True
-
-    if not ball_stuck and ball.bottom >= SCREEN_HEIGHT:
-        game_over_sound.play()
-        pygame.time.wait(2000)  # Wait for 2 seconds to let the sound play
-        show_start_screen(SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT)
-        paddle = create_paddle(SCREEN_WIDTH, SCREEN_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT)
-        ball, ball_dx, ball_dy = create_ball(SCREEN_WIDTH, SCREEN_HEIGHT, BALL_SIZE, BALL_SPEED, paddle)
-        bricks = create_bricks()
-
-
-    shield, enlarge, laser, sticky, shield_active, enlarge_active, laser_active, sticky_active, countdown_start_time = update_powerups(shield, enlarge, laser, sticky, paddle, shield_active, enlarge_active, laser_active, sticky_active, shield_sound, enlarge_sound, laser_sound, sticky_sound, countdown_start_time, SCREEN_HEIGHT)
-    shield, shield_active, countdown_start_time = update_shield(shield, paddle, shield_active, shield_sound, countdown_start_time, SCREEN_HEIGHT)
-    enlarge, enlarge_active = update_enlarge(enlarge, paddle, enlarge_active, enlarge_sound, SCREEN_HEIGHT)
-
-    if shield_active and pygame.time.get_ticks() - shield_activation_time > 30000:  # 30 seconds
-        shield_active = False
-
-    # Update countdown timer
-    if laser:
-        pygame.draw.rect(SCREEN, RED, laser)
-        text = font.render("L", True, WHITE)
-        SCREEN.blit(text, (laser.x + 5, laser.y + 5))
-        text = font.render("Laser", True, WHITE)
-        SCREEN.blit(text, (laser.x, laser.y - 20))
-
-    if sticky:
-        pygame.draw.rect(SCREEN, YELLOW, sticky)
-        text = font.render("T", True, WHITE)
-        SCREEN.blit(text, (sticky.x + 5, sticky.y + 5))
-        pygame.draw.rect(SCREEN, YELLOW, sticky)
-        text = font.render("T", True, WHITE)
-        SCREEN.blit(text, (sticky.x + 5, sticky.y + 5))
-        elapsed_time = pygame.time.get_ticks() - countdown_start_time
-        remaining_time = max(0, COUNTDOWN_TIME - elapsed_time)
-    else:
-        remaining_time = 0
-
-    if enlarge_active:
-        paddle.width = PADDLE_WIDTH * 2  # Enlarged paddle width
-    else:
-        paddle.width = PADDLE_WIDTH  # Default paddle width
-
-    SCREEN.fill(BLACK)
-    paddle_color = BLUE if enlarge_active else WHITE
-    draw_paddle(SCREEN, paddle, paddle_color, scale_x, scale_y)
-    draw_ball(SCREEN, ball, WHITE, scale_x, scale_y)
-    for brick in bricks:
-        draw_brick(SCREEN, brick, BLUE, scale_x, scale_y)
-    
-        
-    if shield:
-        pygame.draw.rect(SCREEN, GREEN, shield)
-        text = font.render("S", True, WHITE)
-        SCREEN.blit(text, (shield.x + 5, shield.y + 5))
-
-    if enlarge:
-        pygame.draw.rect(SCREEN, BLUE, enlarge)
-        text = font.render("E", True, WHITE)
-        SCREEN.blit(text, (enlarge.x + 5, enlarge.y + 5))
-
-    if laser:
-        pygame.draw.rect(SCREEN, RED, laser)
-
-    if shield_active:
-        pygame.draw.rect(SCREEN, GREEN, (0, SCREEN_HEIGHT - SHIELD_HEIGHT, SCREEN_WIDTH, SHIELD_HEIGHT))
-
-    # Display countdown timer
-    if shield_active:
-        minutes = remaining_time // 60000
-        seconds = (remaining_time % 60000) // 1000
-        timer_text = f"Shield: {minutes:02}:{seconds:02}"
-    else:
-        timer_text = "Shield: 00:00"
-
-    text = font.render(timer_text, True, WHITE)
-    SCREEN.blit(text, (10, 10))
-
-    pygame.display.flip()
-    clock.tick(60)
-    clock.tick(60)
+ if __name__ == "__main__":
+     game = Game()
+     game.run()
