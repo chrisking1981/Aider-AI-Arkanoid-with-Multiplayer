@@ -3,7 +3,7 @@ import random
 
 class Ball:
      def __init__(self, screen_width, screen_height, paddle, ball_size=10, ball_speed=5):
-         self.rect = pygame.Rect(paddle.x + paddle.width // 2 - ball_size // 2, paddle.y - ball_size, ball_size, ball_size)
+         self.rect = pygame.Rect(paddle.rect.x + paddle.rect.width // 2 - ball_size // 2, paddle.rect.y - ball_size, ball_size, ball_size)
          self.dx = ball_speed * random.choice((1, -1))
          self.dy = ball_speed * random.choice((1, -1))
          self.screen_width = screen_width
