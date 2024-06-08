@@ -106,10 +106,10 @@ class Game:
 
      def draw(self):
          self.screen.fill(BLACK)
-         self.paddle.draw(self.screen)
-         self.ball.draw(self.screen)
+         self.paddle.draw(self.screen, WHITE, 1, 1)
+         self.ball.draw(self.screen, WHITE, 1, 1)
          for brick in self.bricks:
-             Brick.draw(self.screen, brick)
+             Brick.draw(self.screen, brick, BLUE, 1, 1)
          self.powerup_manager.draw(self.screen, self.font)
          self.draw_shield()
          self.draw_timer()
