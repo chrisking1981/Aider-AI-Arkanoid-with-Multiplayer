@@ -34,6 +34,8 @@ sticky_sound = sound_manager.sticky_sound
 class Game:
      def __init__(self):
          self.screen = SCREEN
+         self.screen_width = SCREEN_WIDTH
+         self.screen_height = SCREEN_HEIGHT
          self.clock = pygame.time.Clock()
          self.font = pygame.font.Font(None, 24)
          self.paddle = Paddle(SCREEN_WIDTH, SCREEN_HEIGHT)
