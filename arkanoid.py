@@ -14,7 +14,6 @@ from paddle import Paddle
 from ball import Ball
 from brick import Brick
 from powerups import PowerUpManager
-from laser import Laser
 
 # Screen dimensions
 SCREEN_WIDTH = 800
@@ -45,7 +44,6 @@ class Game:
          self.powerup_manager = PowerUpManager()
          self.ball_stuck = True
          self.lasers = []
-         self.paddle.rect.width = 100  # Reset paddle width to default
          self.paddle_hit_sound = paddle_hit_sound
          self.brick_hit_sound = brick_hit_sound
          self.game_over_sound = game_over_sound
@@ -85,8 +83,9 @@ class Game:
              self.paddle.move(-self.paddle.speed)
          if keys[pygame.K_RIGHT]:
              self.paddle.move(self.paddle.speed)
-         if keys[pygame.K_SPACE] and self.laser_active:
-             self.shoot_laser()
+         if keys[pygame.K_SPACE]:
+             if self.laser_active:
+                 self.shoot_laser()
              self.ball.stick_to_paddle(self.paddle)
              if keys[pygame.K_f]:
                  self.ball.launch()
