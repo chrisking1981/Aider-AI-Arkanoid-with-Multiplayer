@@ -49,9 +49,10 @@ class PowerUpManager:
          if self.enlarge:
              self.enlarge.y += 5
              if self.enlarge.colliderect(paddle.rect):
-                 game.enlarge_active = True
-                 game.enlarge_sound.play()
-                 paddle.rect.width *= 1.5  # Increase paddle width by 50%
+                 if not game.enlarge_active:
+                     game.enlarge_active = True
+                     game.enlarge_sound.play()
+                     paddle.rect.width *= 1.5  # Increase paddle width by 50%
                  self.enlarge = None
              elif self.enlarge.y > game.screen_height:
                  self.enlarge = None

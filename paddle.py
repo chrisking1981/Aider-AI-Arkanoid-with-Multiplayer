@@ -15,6 +15,9 @@ class Paddle:
          if self.rect.x > self.screen_width - self.rect.width:
              self.rect.x = self.screen_width - self.rect.width
 
-     def draw(self, screen, color, scale_x, scale_y):
+     def draw(self, screen, color, scale_x, scale_y, game):
          scaled_paddle = pygame.Rect(self.rect.x * scale_x, self.rect.y * scale_y, self.rect.width * scale_x, self.rect.height * scale_y)
-         pygame.draw.rect(screen, color, scaled_paddle)
+         if game.enlarge_active:
+             pygame.draw.rect(screen, (0, 0, 255), scaled_paddle)  # Blue color when enlarged
+         else:
+             pygame.draw.rect(screen, color, scaled_paddle)

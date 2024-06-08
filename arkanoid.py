@@ -116,7 +116,7 @@ class Game:
 
      def draw(self):
          self.screen.fill(BLACK)
-         self.paddle.draw(self.screen, WHITE, 1, 1)
+         self.paddle.draw(self.screen, WHITE, 1, 1, self)
          self.ball.draw(self.screen, WHITE, 1, 1)
          for brick in self.bricks:
              Brick.draw(self.screen, brick, BLUE, 1, 1)
