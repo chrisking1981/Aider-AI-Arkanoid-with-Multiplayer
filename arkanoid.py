@@ -21,7 +21,7 @@ SCREEN_HEIGHT = 600
 ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
 pygame.display.set_caption("Arkanoid")
-nonlocalclass Game:
+class Game:
      def __init__(self):
          self.screen = SCREEN
          self.clock = pygame.time.Clock()
