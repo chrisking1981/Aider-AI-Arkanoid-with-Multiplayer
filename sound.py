@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 
- class SoundManager:
+class SoundManager:
      def __init__(self):
          self.paddle_hit_sound = self.generate_sound(440, 0.1)
          self.brick_hit_sound = self.generate_sound(880, 0.1)
