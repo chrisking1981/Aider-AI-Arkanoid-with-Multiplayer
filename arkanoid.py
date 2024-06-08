@@ -6,7 +6,7 @@ import numpy as np
 # Initialize Pygame
 pygame.init()
 
-from sound import paddle_hit_sound, brick_hit_sound, game_over_sound, laser_sound, shield_sound, enlarge_sound, sticky_sound
+from sound import SoundManager
 from start_screen import show_start_screen
 from colors import BLACK, WHITE, BLUE, RED, GREEN, YELLOW
 from screen import maintain_aspect_ratio
@@ -21,6 +21,16 @@ SCREEN_HEIGHT = 600
 ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
 pygame.display.set_caption("Arkanoid")
+sound_manager = SoundManager()
+
+paddle_hit_sound = sound_manager.paddle_hit_sound
+brick_hit_sound = sound_manager.brick_hit_sound
+game_over_sound = sound_manager.game_over_sound
+laser_sound = sound_manager.laser_sound
+shield_sound = sound_manager.shield_sound
+enlarge_sound = sound_manager.enlarge_sound
+sticky_sound = sound_manager.sticky_sound
+
 class Game:
      def __init__(self):
          self.screen = SCREEN
