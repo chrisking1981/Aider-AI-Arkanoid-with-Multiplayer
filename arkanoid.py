@@ -58,7 +58,6 @@ class Game:
          self.last_shot_time = 0
 
      def reset(self):
-         self.paddle = Paddle(SCREEN_WIDTH, SCREEN_HEIGHT)
          self.ball = Ball(SCREEN_WIDTH, SCREEN_HEIGHT, self.paddle)
          self.bricks = Brick.create_bricks()
          self.ball_stuck = True
