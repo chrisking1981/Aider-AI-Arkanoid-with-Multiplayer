@@ -43,6 +43,7 @@ class Game:
          self.bricks = Brick.create_bricks()
          self.powerup_manager = PowerUpManager()
          self.ball_stuck = True
+         self.paddle.rect.width = 100  # Reset paddle width to default
          self.paddle_hit_sound = paddle_hit_sound
          self.brick_hit_sound = brick_hit_sound
          self.game_over_sound = game_over_sound
