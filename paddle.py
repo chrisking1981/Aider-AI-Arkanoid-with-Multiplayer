@@ -19,6 +19,4 @@ class Paddle:
          scaled_paddle = pygame.Rect(self.rect.x * scale_x, self.rect.y * scale_y, self.rect.width * scale_x, self.rect.height * scale_y)
          if game.enlarge_active:
              pygame.draw.rect(screen, (0, 0, 255), scaled_paddle)  # Blue color when enlarged
-         elif game.laser_active:
-             pygame.draw.rect(screen, (255, 0, 0), scaled_paddle)  # Red color when laser is active
              pygame.draw.rect(screen, color, scaled_paddle)
