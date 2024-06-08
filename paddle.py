@@ -1,16 +1,17 @@
 import pygame
 
-def create_paddle(screen_width, screen_height, paddle_width, paddle_height):
-    return pygame.Rect((screen_width // 2) - (paddle_width // 2), screen_height - 30, paddle_width, paddle_height)
+class Paddle:
+     def __init__(self, screen_width, screen_height, paddle_width=100, paddle_height=20, speed=10):
+         self.rect = pygame.Rect((screen_width // 2) - (paddle_width // 2), screen_height - 30, paddle_width, paddle_height)
+         self.speed = speed
 
+     def move(self, dx):
+         self.rect.x += dx
+         if self.rect.x < 0:
+             self.rect.x = 0
+         if self.rect.x > self.rect.width - self.rect.width:
+             self.rect.x = self.rect.width - self.rect.width
 
-def move_paddle(paddle, dx, screen_width, paddle_width):
-    paddle.x += dx
-    if paddle.x < 0:
-        paddle.x = 0
-    if paddle.x > screen_width - paddle_width:
-        paddle.x = screen_width - paddle_width
-
-def draw_paddle(screen, paddle, color, scale_x, scale_y):
-    scaled_paddle = pygame.Rect(paddle.x * scale_x, paddle.y * scale_y, paddle.width * scale_x, paddle.height * scale_y)
-    pygame.draw.rect(screen, color, scaled_paddle)
+     def draw(self, screen, color, scale_x, scale_y):
+         scaled_paddle = pygame.Rect(self.rect.x * scale_x, self.rect.y * scale_y, self.rect.width * scale_x, self.rect.height * scale_y)
+         pygame.draw.rect(screen, color, scaled_paddle)
