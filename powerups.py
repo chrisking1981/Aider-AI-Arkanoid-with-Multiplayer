@@ -61,8 +61,9 @@ class PowerUpManager:
          if self.laser:
              self.laser.y += 5
              if self.laser.colliderect(paddle.rect):
-                 game.laser_active = True
-                 game.laser_sound.play()
+                 if not game.laser_active:
+                     game.laser_active = True
+                     game.laser_sound.play()
                  self.laser = None
              elif self.laser.y > game.screen_height:
                  self.laser = None

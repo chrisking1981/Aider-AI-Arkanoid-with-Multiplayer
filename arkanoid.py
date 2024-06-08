@@ -14,6 +14,7 @@ from paddle import Paddle
 from ball import Ball
 from brick import Brick
 from powerups import PowerUpManager
+from laser import Laser
 
 # Screen dimensions
 SCREEN_WIDTH = 800
@@ -43,6 +44,7 @@ class Game:
          self.bricks = Brick.create_bricks()
          self.powerup_manager = PowerUpManager()
          self.ball_stuck = True
+         self.lasers = []
          self.paddle.rect.width = 100  # Reset paddle width to default
          self.paddle_hit_sound = paddle_hit_sound
          self.brick_hit_sound = brick_hit_sound
@@ -83,7 +85,8 @@ class Game:
              self.paddle.move(-self.paddle.speed)
          if keys[pygame.K_RIGHT]:
              self.paddle.move(self.paddle.speed)
-         if self.ball_stuck:
+         if keys[pygame.K_SPACE] and self.laser_active:
+             self.shoot_laser()
              self.ball.stick_to_paddle(self.paddle)
              if keys[pygame.K_f]:
                  self.ball.launch()
@@ -113,6 +116,7 @@ class Game:
              self.reset()
 
          self.powerup_manager.update(self.paddle, self)
+         self.update_lasers()
 
      def draw(self):
          self.screen.fill(BLACK)
@@ -121,6 +125,7 @@ class Game:
          for brick in self.bricks:
              Brick.draw(self.screen, brick, BLUE, 1, 1)
          self.powerup_manager.draw(self.screen, self.font)
+         self.draw_lasers()
          self.draw_shield()
          self.draw_timer()
          pygame.display.flip()
@@ -139,7 +144,28 @@ class Game:
          elapsed_time = pygame.time.get_ticks() - self.countdown_start_time
          return max(0, 30000 - elapsed_time)
 
-     def run(self):
+     def shoot_laser(self):
+         if pygame.time.get_ticks() - self.last_shot_time > 500:  # 500 ms delay between shots
+             laser = Laser(self.paddle.rect.centerx, self.paddle.rect.top)
+             self.lasers.append(laser)
+             self.last_shot_time = pygame.time.get_ticks()
+
+     def update_lasers(self):
+         for laser in self.lasers[:]:
+             laser.move()
+             if laser.rect.bottom < 0:
+                 self.lasers.remove(laser)
+             else:
+                 for brick in self.bricks[:]:
+                     if laser.rect.colliderect(brick.rect):
+                         self.bricks.remove(brick)
+                         self.lasers.remove(laser)
+                         self.brick_hit_sound.play()
+                         break
+
+     def draw_lasers(self):
+         for laser in self.lasers:
+             laser.draw(self.screen)
          show_start_screen(self.screen, SCREEN_WIDTH, SCREEN_HEIGHT)
          while True:
              self.handle_events()
