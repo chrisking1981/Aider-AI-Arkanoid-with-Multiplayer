@@ -3,8 +3,8 @@ import sys
 import random
 import numpy as np
 
- # Initialize Pygame
- pygame.init()
+# Initialize Pygame
+pygame.init()
 
  from sound import paddle_hit_sound, brick_hit_sound, game_over_sound, laser_sound, shield_sound, enlarge_sound, sticky_sound
  from start_screen import show_start_screen
