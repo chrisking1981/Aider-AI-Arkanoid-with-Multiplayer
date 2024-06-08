@@ -38,6 +38,7 @@ class Game:
          self.screen_height = SCREEN_HEIGHT
          self.clock = pygame.time.Clock()
          self.font = pygame.font.Font(None, 24)
+         self.paddle = Paddle(SCREEN_WIDTH, SCREEN_HEIGHT)
          self.ball = Ball(SCREEN_WIDTH, SCREEN_HEIGHT, self.paddle)
          self.bricks = Brick.create_bricks()
          self.powerup_manager = PowerUpManager()
