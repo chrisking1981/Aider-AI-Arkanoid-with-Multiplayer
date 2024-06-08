@@ -4,6 +4,7 @@ class Paddle:
      def __init__(self, screen_width, screen_height, paddle_width=100, paddle_height=20, speed=10):
          self.rect = pygame.Rect((screen_width // 2) - (paddle_width // 2), screen_height - 30, paddle_width, paddle_height)
          self.speed = speed
+         self.height = paddle_height
 
          self.screen_width = screen_width
 
