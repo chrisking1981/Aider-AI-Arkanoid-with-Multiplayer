@@ -15,14 +15,13 @@ from ball import Ball
 from brick import Brick
 from powerups import PowerUpManager
 
- # Screen dimensions
- SCREEN_WIDTH = 800
- SCREEN_HEIGHT = 600
- ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT
- SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
- pygame.display.set_caption("Arkanoid")
-
- class Game:
+# Screen dimensions
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT
+SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+pygame.display.set_caption("Arkanoid")
+nonlocalclass Game:
      def __init__(self):
          self.screen = SCREEN
          self.clock = pygame.time.Clock()
@@ -128,6 +127,6 @@ from powerups import PowerUpManager
              self.draw()
              self.clock.tick(60)
 
- if __name__ == "__main__":
+if __name__ == "__main__":
      game = Game()
      game.run()
