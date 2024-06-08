@@ -14,8 +14,8 @@ class PowerUpManager:
          self.sticky = None
 
      def handle_powerups(self, brick, paddle, game):
-         if not (self.shield or self.enlarge or self.laser or self.sticky):
-             powerups = ['shield', 'enlarge', 'laser', 'sticky']
+         if not (self.shield or self.enlarge or self.sticky):
+             powerups = ['shield', 'enlarge', 'sticky']
              selected_powerup = random.choice(powerups)
              if selected_powerup == 'shield':
                  self.shield = pygame.Rect(brick.rect.x + brick.rect.width // 2 - self.SHIELD_SIZE // 2, brick.rect.y, self.SHIELD_SIZE, self.SHIELD_SIZE)
