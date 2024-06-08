@@ -6,14 +6,14 @@ import numpy as np
 # Initialize Pygame
 pygame.init()
 
- from sound import paddle_hit_sound, brick_hit_sound, game_over_sound, laser_sound, shield_sound, enlarge_sound, sticky_sound
- from start_screen import show_start_screen
- from colors import BLACK, WHITE, BLUE, RED, GREEN, YELLOW
- from screen import maintain_aspect_ratio
- from paddle import Paddle
- from ball import Ball
- from brick import Brick
- from powerups import PowerUpManager
+from sound import paddle_hit_sound, brick_hit_sound, game_over_sound, laser_sound, shield_sound, enlarge_sound, sticky_sound
+from start_screen import show_start_screen
+from colors import BLACK, WHITE, BLUE, RED, GREEN, YELLOW
+from screen import maintain_aspect_ratio
+from paddle import Paddle
+from ball import Ball
+from brick import Brick
+from powerups import PowerUpManager
 
  # Screen dimensions
  SCREEN_WIDTH = 800
